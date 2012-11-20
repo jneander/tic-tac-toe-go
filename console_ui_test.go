@@ -14,6 +14,6 @@ func TestConsoleUiPromptMainMenu( t *testing.T ) {
               "Press any key to exit... "
 
   ui.PromptMainMenu()
-  actual := ReadBuffer( &out )
+  actual := ReadInput( &out )
   assert.Equals( t, actual, expected )
 }
