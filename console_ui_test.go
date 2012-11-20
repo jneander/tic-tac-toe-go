@@ -6,7 +6,7 @@ import "bytes"
 
 var in   bytes.Buffer
 var out  bytes.Buffer
-var ui = Console{ &in, &out }
+var ui UI = ConsoleUI{ &in, &out }
 
 func TestConsoleUiPromptMainMenu( t *testing.T ) {
   in.WriteString( "any key...\n" )

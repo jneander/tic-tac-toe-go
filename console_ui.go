@@ -1,12 +1,12 @@
 package tictactoe
 
 
-type Console struct {
+type ConsoleUI struct {
   in  Reader
   out Writer
 }
 
-func ( c Console ) PromptMainMenu() {
+func ( c ConsoleUI ) PromptMainMenu() {
   c.out.WriteString( "Welcome to Tic Tac Toe in Go!\n" +
                      "Press any key to exit... " )
   for keys := ""; len(keys) == 0; keys = ReadInput( c.in ) {}
