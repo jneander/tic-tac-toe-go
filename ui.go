@@ -3,6 +3,7 @@ package tictactoe
 type UI interface {
   PromptMainMenu()
   DisplayBoard( Board )
+  PromptPlayerMove( ...interface{} ) int
 }
 
 type Reader interface {
