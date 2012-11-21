@@ -10,8 +10,8 @@ type ConsoleUI struct {
 }
 
 func ( c ConsoleUI ) PromptMainMenu() {
-  c.out.WriteString( "Welcome to Tic Tac Toe in Go!\n" +
-                     "Press any key to exit... " )
+  message := "Welcome to Tic Tac Toe in Go!\nPress any key to exit... "
+  c.out.WriteString( message )
   for keys := ""; len(keys) == 0; keys = ReadLine( c.in ) {}
 }
 
@@ -58,7 +58,7 @@ func ReadInput( buffer Reader ) ( result string ) {
   return string( read[:num] )
 }
 
-func ReadLine( reader io.Reader ) string {
+func ReadLine( reader Reader ) string {
   var buffer = make( []byte, 1 )
   var output string
   for {
