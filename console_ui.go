@@ -1,5 +1,6 @@
 package tictactoe
 
+import "io"
 import "strings"
 
 type ConsoleUI struct {
@@ -27,4 +28,15 @@ func ReadInput( buffer Reader ) ( result string ) {
   var read = make( []byte, 128 )
   num, _ := buffer.Read( read )
   return string( read[:num] )
+}
+
+func ReadLine( reader io.Reader ) string {
+  var buffer = make( []byte, 1 )
+  var output string
+  for {
+    _,err := reader.Read( buffer )
+    if buffer[0] == '\n' || err == io.EOF { break }
+    output += string( buffer[0] )
+  }
+  return output
 }

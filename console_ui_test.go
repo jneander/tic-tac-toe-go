@@ -33,3 +33,13 @@ func TestConsoleUiDisplayBoard( t *testing.T ) {
   expected = "_|_|_\n_|X|O\nO|_|X\n"
   assert.Equals( t, ReadInput( &out ), expected )
 }
+
+func TestReadLine( t *testing.T ) {
+  t.Log( "ReadLine() reads input up until newline" )
+  buffer := bytes.NewBuffer( []byte( "test\nvalue" ) )
+  assert.Equals( t, ReadLine( buffer ), "test" )
+
+  t.Log( "ReadLine() reads input up until end of reader buffer" )
+  assert.Equals( t, ReadLine( buffer ), "value" )
+  assert.Equals( t, ReadLine( buffer ), "" )
+}
