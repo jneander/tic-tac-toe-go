@@ -37,6 +37,21 @@ func TestGameOver( t *testing.T ) {
   assert.True( t, game.IsOver() )
 }
 
+func TestGameIsValidMove( t *testing.T ) {
+  var game  = NewGame()
+  var board = &game.Board
+
+  t.Log( "IsValidMove() returns true if the selected space is blank" )
+  assert.True( t, game.IsValidMove( 1 ) )
+  assert.True( t, game.IsValidMove( 2 ) )
+
+  t.Log( "IsValidMove() returns true if the selected space is blank" )
+  board.Mark( 1, "X" )
+  board.Mark( 2, "O" )
+  assert.False( t, game.IsValidMove( 1 ) )
+  assert.False( t, game.IsValidMove( 2 ) )
+}
+
 func addMarks( b Board, set []int, mark string ) {
   for _,p := range set {
     b.Mark( p, mark )

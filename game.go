@@ -14,6 +14,11 @@ func NewGame() Game {
   return *g
 }
 
+func ( g Game ) IsValidMove( space int ) bool {
+  board := g.Board
+  return board.Spaces()[ space ] == board.Blank()
+}
+
 func boardIsFull( board Board ) bool {
   for _,mark := range board.Spaces() {
     if mark == board.Blank() { return false }
