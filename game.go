@@ -1,33 +1,42 @@
 package tictactoe
 
-type Game struct {
+type Game interface {
+  Board() *Board
+  IsOver() bool
+  IsValidMove( int ) bool
+  ApplyMove( int, string )
+}
+
+type game struct {
   board *Board
 }
 
-func ( g Game ) IsOver() bool {
+func ( g game ) IsOver() bool {
   return winningSetExists( g.board ) || boardIsFull( g.board )
 }
 
-func NewGame() Game {
-  g := new( Game )
+func NewGame() game {
+  g := new( game )
   g.board = NewBoard()
   return *g
 }
 
-func ( g Game ) IsValidMove( space int ) bool {
+func ( g game ) IsValidMove( space int ) bool {
   board := g.board
   return board.Spaces()[ space ] == board.Blank()
 }
 
-func ( g Game ) ApplyMove( pos int, mark string ) {
+func ( g game ) ApplyMove( pos int, mark string ) {
   if ( g.IsValidMove( pos ) ) {
     g.board.Mark( pos, mark )
   }
 }
 
-func ( g *Game ) Board() *Board {
+func ( g game ) Board() *Board {
   return g.board
 }
+
+// PRIVATE
 
 func boardIsFull( board *Board ) bool {
   for _,mark := range board.Spaces() {
