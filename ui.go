@@ -2,7 +2,7 @@ package tictactoe
 
 type UI interface {
   PromptMainMenu()
-  DisplayBoard( Board )
+  DisplayBoard( *Board )
   PromptPlayerMove( ...interface{} ) int
 }
 

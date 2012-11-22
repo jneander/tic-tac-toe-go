@@ -24,10 +24,10 @@ func ( b *Board ) Reset() {
   setBoard( b )
 }
 
-func NewBoard() Board {
+func NewBoard() *Board {
   b := new( Board )
   setBoard( b )
-  return *b
+  return b
 }
 
 func setBoard( b *Board ) {

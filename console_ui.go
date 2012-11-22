@@ -15,7 +15,7 @@ func ( c ConsoleUI ) PromptMainMenu() {
   for keys := ""; len(keys) == 0; keys = ReadLine( c.in ) {}
 }
 
-func ( c ConsoleUI ) DisplayBoard( b Board ) {
+func ( c ConsoleUI ) DisplayBoard( b *Board ) {
   spaces := b.Spaces()
   rows := make( []string, 3 )
   for i := range rows {

@@ -69,7 +69,7 @@ func TestGameApplyMove( t *testing.T ) {
   assert.Equals( t, board.Spaces()[1], "O" )
 }
 
-func addMarks( b Board, set []int, mark string ) {
+func addMarks( b *Board, set []int, mark string ) {
   for _,p := range set {
     b.Mark( p, mark )
   }

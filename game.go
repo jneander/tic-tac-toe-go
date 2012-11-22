@@ -1,7 +1,7 @@
 package tictactoe
 
 type Game struct {
-  Board Board
+  Board *Board
 }
 
 func ( g Game ) IsOver() bool {
@@ -25,14 +25,14 @@ func ( g Game ) ApplyMove( pos int, mark string ) {
   }
 }
 
-func boardIsFull( board Board ) bool {
+func boardIsFull( board *Board ) bool {
   for _,mark := range board.Spaces() {
     if mark == board.Blank() { return false }
   }
   return true
 }
 
-func winningSetExists( board Board ) bool {
+func winningSetExists( board *Board ) bool {
   exists := false
   for _,set := range solutions() {
     exists = exists || allSpacesMatch( board, set )
@@ -40,7 +40,7 @@ func winningSetExists( board Board ) bool {
   return exists
 }
 
-func allSpacesMatch( board Board, pos []int ) bool {
+func allSpacesMatch( board *Board, pos []int ) bool {
   spaces := board.Spaces()
   mark := spaces[ pos[ 0 ] ]
   result := mark != board.Blank()
