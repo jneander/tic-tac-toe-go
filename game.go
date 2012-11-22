@@ -1,28 +1,32 @@
 package tictactoe
 
 type Game struct {
-  Board *Board
+  board *Board
 }
 
 func ( g Game ) IsOver() bool {
-  return winningSetExists( g.Board ) || boardIsFull( g.Board )
+  return winningSetExists( g.board ) || boardIsFull( g.board )
 }
 
 func NewGame() Game {
   g := new( Game )
-  g.Board = NewBoard()
+  g.board = NewBoard()
   return *g
 }
 
 func ( g Game ) IsValidMove( space int ) bool {
-  board := g.Board
+  board := g.board
   return board.Spaces()[ space ] == board.Blank()
 }
 
 func ( g Game ) ApplyMove( pos int, mark string ) {
   if ( g.IsValidMove( pos ) ) {
-    g.Board.Mark( pos, mark )
+    g.board.Mark( pos, mark )
   }
+}
+
+func ( g *Game ) Board() *Board {
+  return g.board
 }
 
 func boardIsFull( board *Board ) bool {

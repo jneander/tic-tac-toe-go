@@ -3,43 +3,52 @@ package tictactoe
 import "github.com/sdegutis/go.assert"
 import "testing"
 
+func TestGameBoard( t *testing.T ) {
+  var game Game = NewGame()
+
+  t.Log( "Board() returns the game's board instance" )
+  var board *Board = game.Board()
+  assert.Equals( t, game.Board(), board )
+}
+
 func TestGameOver( t *testing.T ) {
   var game Game = NewGame()
+  var board = game.Board()
 
   t.Log( "New Game is not over" )
   assert.False( t, game.IsOver() )
 
   t.Log( "Game with two-in-a-row is not over" )
-  addMarks( game.Board, []int{ 4, 8 }, "X" )
+  addMarks( board, []int{ 4, 8 }, "X" )
   assert.False( t, game.IsOver() )
 
   t.Log( "Game with three-in-a-row \"X\" is over" )
-  game.Board.Mark( 0, "X" )
+  board.Mark( 0, "X" )
   assert.True( t, game.IsOver() )
 
   t.Log( "Game with three-in-a-row \"O\" is over" )
-  game.Board.Reset()
-  addMarks( game.Board, []int{ 2, 4, 6 }, "O" )
+  board.Reset()
+  addMarks( board, []int{ 2, 4, 6 }, "O" )
   assert.True( t, game.IsOver() )
 
   t.Log( "Game with three-in-a-row mismatched is not over" )
-  game.Board.Mark( 2, "X" )
+  board.Mark( 2, "X" )
   assert.False( t, game.IsOver() )
 
   t.Log( "Game with nearly-full, non-winning board is not over" )
-  game.Board.Reset()
-  addMarks( game.Board, []int{ 0, 1, 4, 5 }, "X" )
-  addMarks( game.Board, []int{ 2, 3, 7, 8 }, "O" )
+  board.Reset()
+  addMarks( board, []int{ 0, 1, 4, 5 }, "X" )
+  addMarks( board, []int{ 2, 3, 7, 8 }, "O" )
   assert.False( t, game.IsOver() )
 
   t.Log( "Game with full, non-winning board is over" )
-  game.Board.Mark( 6, "X" )
+  board.Mark( 6, "X" )
   assert.True( t, game.IsOver() )
 }
 
 func TestGameIsValidMove( t *testing.T ) {
   var game  = NewGame()
-  var board = &game.Board
+  var board = game.Board()
 
   t.Log( "IsValidMove() returns true if the selected space is blank" )
   assert.True( t, game.IsValidMove( 1 ) )
@@ -54,7 +63,7 @@ func TestGameIsValidMove( t *testing.T ) {
 
 func TestGameApplyMove( t *testing.T ) {
   var game  = NewGame()
-  var board = &game.Board
+  var board = game.Board()
 
   t.Log( "ApplyMove() applies the selected mark to the board" )
   game.ApplyMove( 0, "X" )
