@@ -10,6 +10,7 @@ func ( g Game ) IsOver() bool {
 
 func NewGame() Game {
   g := new( Game )
+  g.Board = NewBoard()
   return *g
 }
 

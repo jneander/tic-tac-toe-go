@@ -5,7 +5,6 @@ import "testing"
 
 func TestGameOver( t *testing.T ) {
   var game Game = NewGame()
-  game.Board = NewBoard()
 
   t.Log( "New Game is not over" )
   assert.False( t, game.IsOver() )
