@@ -52,6 +52,23 @@ func TestGameIsValidMove( t *testing.T ) {
   assert.False( t, game.IsValidMove( 2 ) )
 }
 
+func TestGameApplyMove( t *testing.T ) {
+  var game  = NewGame()
+  var board = &game.Board
+
+  t.Log( "ApplyMove() applies the selected mark to the board" )
+  game.ApplyMove( 0, "X" )
+  game.ApplyMove( 1, "O" )
+  assert.Equals( t, board.Spaces()[0], "X" )
+  assert.Equals( t, board.Spaces()[1], "O" )
+
+  t.Log( "ApplyMove() rejects moves for non-blank spaces" )
+  game.ApplyMove( 1, "X" )
+  game.ApplyMove( 0, "O" )
+  assert.Equals( t, board.Spaces()[0], "X" )
+  assert.Equals( t, board.Spaces()[1], "O" )
+}
+
 func addMarks( b Board, set []int, mark string ) {
   for _,p := range set {
     b.Mark( p, mark )

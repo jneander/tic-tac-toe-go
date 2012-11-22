@@ -19,6 +19,12 @@ func ( g Game ) IsValidMove( space int ) bool {
   return board.Spaces()[ space ] == board.Blank()
 }
 
+func ( g Game ) ApplyMove( pos int, mark string ) {
+  if ( g.IsValidMove( pos ) ) {
+    g.Board.Mark( pos, mark )
+  }
+}
+
 func boardIsFull( board Board ) bool {
   for _,mark := range board.Spaces() {
     if mark == board.Blank() { return false }
