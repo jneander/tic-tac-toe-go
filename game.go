@@ -11,14 +11,18 @@ type game struct {
   board *Board
 }
 
-func ( g game ) IsOver() bool {
-  return winningSetExists( g.board ) || boardIsFull( g.board )
-}
-
 func NewGame() game {
   g := new( game )
   g.board = NewBoard()
   return *g
+}
+
+func ( g game ) Board() *Board {
+  return g.board
+}
+
+func ( g game ) IsOver() bool {
+  return winningSetExists( g.board ) || boardIsFull( g.board )
 }
 
 func ( g game ) IsValidMove( space int ) bool {
@@ -30,10 +34,6 @@ func ( g game ) ApplyMove( pos int, mark string ) {
   if ( g.IsValidMove( pos ) ) {
     g.board.Mark( pos, mark )
   }
-}
-
-func ( g game ) Board() *Board {
-  return g.board
 }
 
 // PRIVATE

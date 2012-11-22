@@ -11,7 +11,7 @@ func TestGameBoard( t *testing.T ) {
   assert.Equals( t, game.Board(), board )
 }
 
-func TestGameOver( t *testing.T ) {
+func TestGameIsOver( t *testing.T ) {
   var game Game = NewGame()
   var board = game.Board()
 
