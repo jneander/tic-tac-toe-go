@@ -18,7 +18,15 @@ func TestQueue( t *testing.T ) {
   t.Log( "Queue panics when empty and Popped" )
   assert.Panics( t, func(){ queue.Pop() } )
 
-  t.Log( "Queue works with different data types" )
+  t.Log( "IsEmpty returns true if Queue contains no elements" )
+  assert.True( t, queue.IsEmpty(), "queue is not empty" )
+
+  t.Log( "Length returns the number of elements in the Queue" )
+  assert.Equal( t, queue.Length(), 0 )
+  queue.Push( 6, 7, 8 )
+  assert.Equal( t, queue.Length(), 3 )
+
+  t.Log( "Queue works with multiple data types" )
   queue = new( Queue )
   queue.Push( "string", "next" )
   assert.Equal( t, queue.Pop(), "string" )

@@ -18,3 +18,11 @@ func (q *Queue) Pop() (val interface{}) {
   }
   panic( "Queue is empty and cannot be popped" )
 }
+
+func (q *Queue) IsEmpty() bool {
+  return len(q.queue) == 0
+}
+
+func (q *Queue) Length() int {
+  return len(q.queue)
+}
