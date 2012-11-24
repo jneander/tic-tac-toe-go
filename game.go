@@ -11,26 +11,26 @@ type game struct {
   board *Board
 }
 
-func NewGame() game {
+func NewGame() *game {
   g := new( game )
   g.board = NewBoard()
-  return *g
+  return g
 }
 
-func ( g game ) Board() *Board {
+func ( g *game ) Board() *Board {
   return g.board
 }
 
-func ( g game ) IsOver() bool {
+func ( g *game ) IsOver() bool {
   return winningSetExists( g.board ) || boardIsFull( g.board )
 }
 
-func ( g game ) IsValidMove( space int ) bool {
+func ( g *game ) IsValidMove( space int ) bool {
   board := g.board
   return board.Spaces()[ space ] == board.Blank()
 }
 
-func ( g game ) ApplyMove( pos int, mark string ) {
+func ( g *game ) ApplyMove( pos int, mark string ) {
   if ( g.IsValidMove( pos ) ) {
     g.board.Mark( pos, mark )
   }
