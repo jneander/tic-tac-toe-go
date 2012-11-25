@@ -16,10 +16,13 @@ func NewConsoleUI( in Reader, out Writer ) *ConsoleUI {
   return ui
 }
 
-func ( c ConsoleUI ) PromptMainMenu() {
-  message := "Welcome to Tic Tac Toe in Go!\nPress any key to exit... "
-  c.out.WriteString( message )
-  for keys := ""; len(keys) == 0; keys = ReadLine( c.in ) {}
+func ( c ConsoleUI ) PromptMainMenu() int {
+  message := "Welcome to Tic Tac Toe in Go!\n" +
+             "Enter one of the following options:\n" +
+             "1) Player vs Player\n" +
+             "2) Exit\n\n"
+  result := promptForInput( c, message, 1, 2 )
+  return result
 }
 
 func ( c ConsoleUI ) DisplayAvailableSpaces( b *Board ) {
@@ -38,13 +41,17 @@ func ( c ConsoleUI ) DisplayBoard( b *Board ) {
 }
 
 func ( c ConsoleUI ) PromptPlayerMove( filter ...interface{} ) int {
+  message := "Please enter the space for your mark: "
+  return promptForInput( c, message, filter... ) - 1
+}
+
+func promptForInput( c ConsoleUI, message string, filter ...interface{} ) int {
   for {
-    c.out.WriteString( "Please enter the space for your mark: " )
+    c.out.WriteString( message )
     conv,err := strconv.Atoi( ReadLine( c.in ) )
 
     if err != nil { continue }
 
-    conv--
     if len( filter ) == 0 {
       return conv
     } else if arrayPosition( filter, conv ) > -1 {

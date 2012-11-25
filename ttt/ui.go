@@ -1,7 +1,7 @@
 package ttt
 
 type UI interface {
-  PromptMainMenu()
+  PromptMainMenu() int
   DisplayBoard( *Board )
   PromptPlayerMove( ...interface{} ) int
   DisplayAvailableSpaces( *Board )

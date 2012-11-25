@@ -15,24 +15,32 @@ func TestNewConsoleUI( t *testing.T ) {
 }
 
 func TestConsoleUiPromptMainMenu( t *testing.T ) {
-  in.WriteString( "any key...\n" )
+  t.Log( "#PromptMainMenu displays a prompt message" )
+  SetInputString( &in, "2\n" )
   expected := "Welcome to Tic Tac Toe in Go!\n" +
-              "Press any key to exit... "
-
+              "Enter one of the following options:\n" +
+              "1) Player vs Player\n" +
+              "2) Exit\n\n"
   ui.PromptMainMenu()
   actual := ReadInput( &out )
   assert.Equals( t, actual, expected )
+
+  t.Log( "#PromptMainMenu accepts only options listed" )
+  SetInputString( &in, "3\n5\n2\nunread" )
+  assert.Equals( t, ui.PromptMainMenu(), 2 )
 }
 
 func TestConsoleUiDisplayBoard( t *testing.T ) {
   board := NewBoard()
 
   t.Log( "DisplayBoard() prints an empty board" )
+  out.Reset()
   ui.DisplayBoard( board )
   expected := "\n     _|_|_\n     _|_|_\n     _|_|_\n\n"
   assert.Equals( t, ReadInput( &out ), expected )
 
   t.Log( "DisplayBoard() prints a board with marks" )
+  out.Reset()
   AddMarks( board, "X", 4, 8 )
   AddMarks( board, "O", 5, 6 )
   ui.DisplayBoard( board )
@@ -76,16 +84,16 @@ func TestConsoleUiPromptPlayerMove( t *testing.T ) {
 
   t.Log( "PromptPlayerMove() returns the user's input" )
   SetInputString( &in, "5\n6\n" )
-  assert.Equals( t, ui.PromptPlayerMove(), 4 )
-  assert.Equals( t, ui.PromptPlayerMove(), 5 )
+  assert.Equals( t, ui.PromptPlayerMove(), 5 - 1 )
+  assert.Equals( t, ui.PromptPlayerMove(), 6 - 1 )
 
   t.Log( "PromptPlayerMove() rejects input not found in optional filter list" )
-  SetInputString( &in, "4\n6\n8" )
-  assert.Equals( t, ui.PromptPlayerMove( 4, 5, 6 ), 5 )
+  SetInputString( &in, "3\n5\n7" )
+  assert.Equals( t, ui.PromptPlayerMove( 4, 5, 6 ), 5 - 1 )
 
   t.Log( "PromptPlayerMove() rejects invalid input" )
   SetInputString( &in, "\ninvalid\n6" )
-  assert.Equals( t, ui.PromptPlayerMove(), 5 )
+  assert.Equals( t, ui.PromptPlayerMove(), 6 - 1 )
 }
 
 func TestReadLine( t *testing.T ) {

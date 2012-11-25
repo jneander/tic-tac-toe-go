@@ -124,7 +124,13 @@ func ( spy *consoleSpy ) DisplayBoard( board *Board ) {
     spy.LogMethodCall( "DisplayBoard" )
   }
 }
-func ( spy *consoleSpy ) PromptMainMenu() {}
+func ( spy *consoleSpy ) PromptMainMenu() int {
+  if spy.activeSpies[ "PromptMainMenu" ] {
+    spy.LogMethodCall( "PromptMainMenu" )
+  }
+  return spy.ui.PromptMainMenu()
+}
+
 func ( spy *consoleSpy ) PromptPlayerMove ( valid ...interface{} ) int {
   if spy.activeSpies[ "PromptPlayerMove" ] {
     spy.LogMethodCall( "PromptPlayerMove" )
