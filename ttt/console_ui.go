@@ -24,7 +24,7 @@ func ( c ConsoleUI ) PromptMainMenu() int {
   result := promptForInput( c, message, 1, 2 )
   switch result {
   case 1:
-    return 1
+    return PVP
   case 2:
     return EXIT_GAME
   }
