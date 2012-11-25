@@ -56,7 +56,7 @@ func TestGameRunnerStart( t *testing.T ) {
   SetInputs( &in, "1", "2", "4", "5", "7" )
   runner.Start()
   expected := []string{ "DisplayBoard", "PromptPlayerMove", "DisplayBoard",
-  "PromptPlayerMove", "DisplayBoard" }
+                        "PromptPlayerMove", "DisplayBoard" }
   sassert.DeepEquals( t, mui.methodCalls[:5], expected )
 
   t.Log( "displays the board after the game is over" )
