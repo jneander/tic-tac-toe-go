@@ -19,7 +19,7 @@ func TestGameIsOver( t *testing.T ) {
   assert.False( t, game.IsOver() )
 
   t.Log( "Game with two-in-a-row is not over" )
-  AddMarks( board, []int{ 4, 8 }, "X" )
+  AddMarks( board, "X", 4, 8 )
   assert.False( t, game.IsOver() )
 
   t.Log( "Game with three-in-a-row \"X\" is over" )
@@ -28,7 +28,7 @@ func TestGameIsOver( t *testing.T ) {
 
   t.Log( "Game with three-in-a-row \"O\" is over" )
   board.Reset()
-  AddMarks( board, []int{ 2, 4, 6 }, "O" )
+  AddMarks( board, "O", 2, 4, 6 )
   assert.True( t, game.IsOver() )
 
   t.Log( "Game with three-in-a-row mismatched is not over" )
@@ -37,8 +37,8 @@ func TestGameIsOver( t *testing.T ) {
 
   t.Log( "Game with nearly-full, non-winning board is not over" )
   board.Reset()
-  AddMarks( board, []int{ 0, 1, 4, 5 }, "X" )
-  AddMarks( board, []int{ 2, 3, 7, 8 }, "O" )
+  AddMarks( board, "X", 0, 1, 4, 5 )
+  AddMarks( board, "O", 2, 3, 7, 8 )
   assert.False( t, game.IsOver() )
 
   t.Log( "Game with full, non-winning board is over" )
@@ -92,10 +92,4 @@ func TestGameReset( t *testing.T ) {
   game.Reset()
   assert.Equals( t, board.Spaces()[0], board.Blank() )
   assert.Equals( t, board.Spaces()[1], board.Blank() )
-}
-
-func AddMarks( b *Board, set []int, mark string ) {
-  for _,p := range set {
-    b.Mark( p, mark )
-  }
 }

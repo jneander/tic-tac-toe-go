@@ -1,5 +1,11 @@
 package ttt
 
+func AddMarks( b *Board, mark string, set ...int ) {
+  for _,p := range set {
+    b.Mark( p, mark )
+  }
+}
+
 type Queue struct {
   queue []interface{}
 }
