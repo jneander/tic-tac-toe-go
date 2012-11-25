@@ -19,13 +19,13 @@ func TestGameRunnerStart( t *testing.T ) {
   t.Log( "applies a mark to the selected space" )
   MakeMoves( game, "X", 0, 1, 5, 6 )
   MakeMoves( game, "O", 2, 3, 4, 7 )
-  SetInputs( &in, "9" )
+  SetInputs( &in, "1", "9" )
   runner.Start()
   assert.Equal( t, game.Board().Spaces()[8], "X" )
 
   t.Log( "applies alternating marks for successive spaces" )
   game.Reset()
-  SetInputs( &in, "3", "1", "4", "2", "5", "6", "8", "7", "9" )
+  SetInputs( &in, "1", "3", "1", "4", "2", "5", "6", "8", "7", "9" )
   runner.Start()
   assert.Equal( t, game.Board().Spaces()[2], "X" )
   assert.Equal( t, game.Board().Spaces()[0], "O" )
@@ -35,7 +35,7 @@ func TestGameRunnerStart( t *testing.T ) {
   t.Log( "stops applying moves when game is over" )
   game.Reset()
   MakeMoves( game, "X", 1, 4 )
-  SetInputs( &in, "8", "9", "1" )
+  SetInputs( &in, "1", "8", "9", "1" )
   runner.Start()
   assert.True( t, game.IsOver() )
   assert.Equal( t, game.Board().Spaces()[8], game.Board().Blank() )
@@ -43,18 +43,27 @@ func TestGameRunnerStart( t *testing.T ) {
 
   t.Log( "rejects invalid moves" )
   game.Reset()
-  SetInputs( &in, "1", "1", "2", "4", "5", "4", "7" )
+  SetInputs( &in, "1", "1", "1", "2", "4", "5", "4", "7" )
   runner.Start()
   assert.Equal( t, game.Board().Spaces()[0], "X" )
   assert.Equal( t, game.Board().Spaces()[1], "O" )
-  assert.Equal( t, game.Board().Spaces()[1], "O" )
+  assert.Equal( t, game.Board().Spaces()[4], "O" )
+
+  t.Log( "prompts with the main menu" )
+  mui := NewConsoleUISpy( &in, &out )
+  mui.SpyOn( "PromptMainMenu", "DisplayAvailableSpaces",
+             "PromptPlayerMove", "DisplayBoard" )
+  runner = prepareRunner( mui, game )
+  SetInputs( &in, "2" )
+  runner.Start()
+  assert.Equal( t, mui.methodCalls[0], "PromptMainMenu" )
 
   t.Log( "displays the board before prompting for moves" )
   game.Reset()
-  mui := NewConsoleUISpy( &in, &out )
+  mui = NewConsoleUISpy( &in, &out )
   mui.SpyOn( "DisplayAvailableSpaces", "PromptPlayerMove", "DisplayBoard" )
   runner = prepareRunner( mui, game )
-  SetInputs( &in, "1", "2", "4", "5", "7" )
+  SetInputs( &in, "1", "1", "2", "4", "5", "7" )
   runner.Start()
   expected := []string{ "DisplayAvailableSpaces", "PromptPlayerMove",
                         "DisplayAvailableSpaces", "PromptPlayerMove" }
@@ -119,11 +128,13 @@ func ( spy *consoleSpy ) DisplayAvailableSpaces( board *Board ) {
     spy.LogMethodCall( "DisplayAvailableSpaces" )
   }
 }
+
 func ( spy *consoleSpy ) DisplayBoard( board *Board ) {
   if spy.activeSpies[ "DisplayBoard" ] {
     spy.LogMethodCall( "DisplayBoard" )
   }
 }
+
 func ( spy *consoleSpy ) PromptMainMenu() int {
   if spy.activeSpies[ "PromptMainMenu" ] {
     spy.LogMethodCall( "PromptMainMenu" )
