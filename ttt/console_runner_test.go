@@ -8,7 +8,7 @@ import "bytes"
 func TestConsoleRunnerStart( t *testing.T ) {
   var in  bytes.Buffer
   var out bytes.Buffer
-  var ui = &ConsoleUI{ &in, &out }
+  var ui = &Console{ &in, &out }
   var game = NewGame()
   runner := prepareRunner( ui, game )
 
@@ -50,7 +50,7 @@ func TestConsoleRunnerStart( t *testing.T ) {
   assert.Equal( t, game.Board().Spaces()[4], "O" )
 
   t.Log( "prompts with the main menu" )
-  mui := NewConsoleUISpy( &in, &out )
+  mui := NewConsoleSpy( &in, &out )
   mui.SpyOn( "PromptMainMenu", "DisplayAvailableSpaces",
              "PromptPlayerMove", "DisplayBoard" )
   runner = prepareRunner( mui, game )
@@ -60,7 +60,7 @@ func TestConsoleRunnerStart( t *testing.T ) {
 
   t.Log( "displays the board before prompting for moves" )
   game.Reset()
-  mui = NewConsoleUISpy( &in, &out )
+  mui = NewConsoleSpy( &in, &out )
   mui.SpyOn( "DisplayAvailableSpaces", "PromptPlayerMove", "DisplayBoard" )
   runner = prepareRunner( mui, game )
   SetInputs( &in, "1", "1", "2", "4", "5", "7" )
@@ -95,9 +95,9 @@ func SetInputs( input *bytes.Buffer, data ...string ) {
   input.WriteString( result )
 }
 
-func NewConsoleUISpy( in Reader, out Writer ) *consoleSpy {
+func NewConsoleSpy( in Reader, out Writer ) *consoleSpy {
   spy := new( consoleSpy )
-  spy.ui = new( ConsoleUI )
+  spy.ui = new( Console )
   spy.ui.in = in
   spy.ui.out = out
   spy.activeSpies = make( map[string]bool )
@@ -105,7 +105,7 @@ func NewConsoleUISpy( in Reader, out Writer ) *consoleSpy {
 }
 
 type consoleSpy struct {
-  ui *ConsoleUI
+  ui *Console
   methodCalls []string
   activeSpies map[string]bool
 }

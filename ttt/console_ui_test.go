@@ -6,10 +6,10 @@ import "bytes"
 
 var in   bytes.Buffer
 var out  bytes.Buffer
-var ui UI = ConsoleUI{ &in, &out }
+var ui UI = Console{ &in, &out }
 
-func TestNewConsoleUI( t *testing.T ) {
-  var ui *ConsoleUI = NewConsoleUI( &in, &out )
+func TestNewConsole( t *testing.T ) {
+  var ui *Console = NewConsole( &in, &out )
   assert.Equal( t, ui.in, &in )
   assert.Equal( t, ui.out, &out )
 }
