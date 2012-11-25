@@ -5,7 +5,7 @@ import "testing"
 
 func TestDumbComputerMove( t *testing.T ) {
   var TIMES = 200
-  var computer = new( DumbComputer )
+  var computer Player = new( DumbComputer )
   var board = NewBoard()
 
   t.Log( "chooses a move at random" )
