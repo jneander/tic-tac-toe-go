@@ -105,6 +105,7 @@ func ( spy *consoleSpy ) LogMethodCall( call string ) {
   spy.methodCalls = newLog
 }
 
+func ( spy *consoleSpy ) DisplayAvailableSpaces( board *Board ) {}
 func ( spy *consoleSpy ) DisplayBoard( board *Board ) {
   spy.LogMethodCall( "DisplayBoard" )
 }

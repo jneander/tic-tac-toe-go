@@ -40,6 +40,26 @@ func TestConsoleUiDisplayBoard( t *testing.T ) {
   assert.Equals( t, ReadInput( &out ), expected )
 }
 
+func TestConsoleUiDisplayAvailableSpaces( t *testing.T ) {
+  board := NewBoard()
+
+  t.Log( "DisplayAvailableSpaces() prints board and all spaces" )
+  ui.DisplayAvailableSpaces( board )
+  expected := "\n     _|_|_     0 1 2\n" +
+                "     _|_|_     3 4 5\n" +
+                "     _|_|_     6 7 8\n\n"
+  assert.Equals( t, ReadInput( &out ), expected )
+
+  t.Log( "DisplayAvailableSpaces() prints board and all spaces" )
+  ints, marks := []int{ 4, 5, 6, 8 }, []string{ "X", "O", "O", "X" }
+  for i := range ints { board.Mark( ints[i], marks[i] ) }
+  ui.DisplayAvailableSpaces( board )
+  expected = "\n     _|_|_     0 1 2\n" +
+               "     _|X|O     3    \n" +
+               "     O|_|X       7  \n\n"
+  assert.Equals( t, ReadInput( &out ), expected )
+}
+
 func TestConsoleUiPromptPlayerMove( t *testing.T ) {
   t.Log( "PromptPlayerMove() prints a prompt" )
   SetInputString( &in, "4\n" )

@@ -22,14 +22,18 @@ func ( c ConsoleUI ) PromptMainMenu() {
   for keys := ""; len(keys) == 0; keys = ReadLine( c.in ) {}
 }
 
-func ( c ConsoleUI ) DisplayBoard( b *Board ) {
-  spaces := b.Spaces()
-  rows := make( []string, 3 )
+func ( c ConsoleUI ) DisplayAvailableSpaces( b *Board ) {
+  rows := boardToASCII( b )
+  vrows := availableSpacesToASCII( b )
   for i := range rows {
-    rows[i] = strings.Join( spaces[i*3:i*3+3], "|" )
-    rows[i] = strings.Replace( rows[i], b.Blank(), "_", -1 )
-    rows[i] = "     " + rows[i]
+    rows[i] = "     " + rows[i] + "     " + vrows[i]
   }
+  c.out.WriteString( "\n" + strings.Join( rows, "\n" ) + "\n\n" )
+}
+
+func ( c ConsoleUI ) DisplayBoard( b *Board ) {
+  rows := boardToASCII( b )
+  for i := range rows { rows[i] = "     " + rows[i] }
   c.out.WriteString( "\n" + strings.Join( rows, "\n" ) + "\n\n" )
 }
 
@@ -47,6 +51,31 @@ func ( c ConsoleUI ) PromptPlayerMove( filter ...interface{} ) int {
     }
   }
   return 0
+}
+
+func boardToASCII( board *Board ) []string {
+  rows := make( []string, 3 )
+  for i := range rows {
+    rows[i] = strings.Join( board.Spaces()[i*3:i*3+3], "|" )
+    rows[i] = strings.Replace( rows[i], board.Blank(), "_", -1 )
+  }
+  return rows
+}
+
+func availableSpacesToASCII( board *Board ) []string {
+  indices := make( []string, 9 )
+  for i := range indices {
+    if board.Spaces()[i] == board.Blank() {
+      indices[i] = strconv.Itoa(i)
+    } else {
+      indices[i] = " "
+    }
+  }
+  rows := make( []string, 3 )
+  for i := range rows {
+    rows[i] = strings.Join( indices[i*3:i*3+3], " " )
+  }
+  return rows
 }
 
 func arrayPosition( array []interface{}, element interface{} ) int {

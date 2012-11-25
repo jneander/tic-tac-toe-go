@@ -4,6 +4,7 @@ type UI interface {
   PromptMainMenu()
   DisplayBoard( *Board )
   PromptPlayerMove( ...interface{} ) int
+  DisplayAvailableSpaces( *Board )
 }
 
 type Reader interface {
