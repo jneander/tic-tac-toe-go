@@ -1,6 +1,6 @@
 package ttt
 
-import "github.com/sdegutis/go.assert"
+import "github.com/stretchrcom/testify/assert"
 import "testing"
 import "bytes"
 
@@ -10,8 +10,8 @@ var ui UI = ConsoleUI{ &in, &out }
 
 func TestNewConsoleUI( t *testing.T ) {
   var ui *ConsoleUI = NewConsoleUI( &in, &out )
-  assert.Equals( t, ui.in, &in )
-  assert.Equals( t, ui.out, &out )
+  assert.Equal( t, ui.in, &in )
+  assert.Equal( t, ui.out, &out )
 }
 
 func TestConsoleUiPromptMainMenu( t *testing.T ) {
@@ -23,11 +23,11 @@ func TestConsoleUiPromptMainMenu( t *testing.T ) {
               "2) Exit\n\n"
   ui.PromptMainMenu()
   actual := ReadInput( &out )
-  assert.Equals( t, actual, expected )
+  assert.Equal( t, actual, expected )
 
   t.Log( "#PromptMainMenu accepts only options listed" )
   SetInputString( &in, "3\n5\n2\nunread" )
-  assert.Equals( t, ui.PromptMainMenu(), EXIT_GAME )
+  assert.Equal( t, ui.PromptMainMenu(), EXIT_GAME )
 }
 
 func TestConsoleUiDisplayBoard( t *testing.T ) {
@@ -37,7 +37,7 @@ func TestConsoleUiDisplayBoard( t *testing.T ) {
   out.Reset()
   ui.DisplayBoard( board )
   expected := "\n     _|_|_\n     _|_|_\n     _|_|_\n\n"
-  assert.Equals( t, ReadInput( &out ), expected )
+  assert.Equal( t, ReadInput( &out ), expected )
 
   t.Log( "DisplayBoard() prints a board with marks" )
   out.Reset()
@@ -45,7 +45,7 @@ func TestConsoleUiDisplayBoard( t *testing.T ) {
   AddMarks( board, "O", 5, 6 )
   ui.DisplayBoard( board )
   expected = "\n     _|_|_\n     _|X|O\n     O|_|X\n\n"
-  assert.Equals( t, ReadInput( &out ), expected )
+  assert.Equal( t, ReadInput( &out ), expected )
 }
 
 func TestConsoleUiDisplayAvailableSpaces( t *testing.T ) {
@@ -56,7 +56,7 @@ func TestConsoleUiDisplayAvailableSpaces( t *testing.T ) {
   expected := "\n     _|_|_     1 2 3\n" +
                 "     _|_|_     4 5 6\n" +
                 "     _|_|_     7 8 9\n\n"
-  assert.Equals( t, ReadInput( &out ), expected )
+  assert.Equal( t, ReadInput( &out ), expected )
 
   t.Log( "DisplayAvailableSpaces() prints board and all spaces" )
   AddMarks( board, "X", 4, 8 )
@@ -65,7 +65,7 @@ func TestConsoleUiDisplayAvailableSpaces( t *testing.T ) {
   expected = "\n     _|_|_     1 2 3\n" +
                "     _|X|O     4    \n" +
                "     O|_|X       8  \n\n"
-  assert.Equals( t, ReadInput( &out ), expected )
+  assert.Equal( t, ReadInput( &out ), expected )
 }
 
 func TestConsoleUiPromptPlayerMove( t *testing.T ) {
@@ -73,37 +73,37 @@ func TestConsoleUiPromptPlayerMove( t *testing.T ) {
   SetInputString( &in, "4\n" )
   ui.PromptPlayerMove()
   expected := "Please enter the space for your mark: "
-  assert.Equals( t, ReadInput( &out ), expected )
+  assert.Equal( t, ReadInput( &out ), expected )
 
   t.Log( "PromptPlayerMove() reprints the prompt after invalid input" )
   SetInputString( &in, "\n5" )
   ui.PromptPlayerMove()
   expected = "Please enter the space for your mark: "
   expected += expected
-  assert.Equals( t, ReadInput( &out ), expected )
+  assert.Equal( t, ReadInput( &out ), expected )
 
   t.Log( "PromptPlayerMove() returns the user's input" )
   SetInputString( &in, "5\n6\n" )
-  assert.Equals( t, ui.PromptPlayerMove(), 5 - 1 )
-  assert.Equals( t, ui.PromptPlayerMove(), 6 - 1 )
+  assert.Equal( t, ui.PromptPlayerMove(), 5 - 1 )
+  assert.Equal( t, ui.PromptPlayerMove(), 6 - 1 )
 
   t.Log( "PromptPlayerMove() rejects input not found in optional filter list" )
   SetInputString( &in, "3\n5\n7" )
-  assert.Equals( t, ui.PromptPlayerMove( 4, 5, 6 ), 5 - 1 )
+  assert.Equal( t, ui.PromptPlayerMove( 4, 5, 6 ), 5 - 1 )
 
   t.Log( "PromptPlayerMove() rejects invalid input" )
   SetInputString( &in, "\ninvalid\n6" )
-  assert.Equals( t, ui.PromptPlayerMove(), 6 - 1 )
+  assert.Equal( t, ui.PromptPlayerMove(), 6 - 1 )
 }
 
 func TestReadLine( t *testing.T ) {
   t.Log( "ReadLine() reads input up until newline" )
   buffer := bytes.NewBuffer( []byte( "test\nvalue" ) )
-  assert.Equals( t, ReadLine( buffer ), "test" )
+  assert.Equal( t, ReadLine( buffer ), "test" )
 
   t.Log( "ReadLine() reads input up until end of reader buffer" )
-  assert.Equals( t, ReadLine( buffer ), "value" )
-  assert.Equals( t, ReadLine( buffer ), "" )
+  assert.Equal( t, ReadLine( buffer ), "value" )
+  assert.Equal( t, ReadLine( buffer ), "" )
 }
 
 func SetInputString( input *bytes.Buffer, data string ) {

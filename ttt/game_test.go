@@ -1,6 +1,6 @@
 package ttt
 
-import "github.com/sdegutis/go.assert"
+import "github.com/stretchrcom/testify/assert"
 import "testing"
 
 func TestGameBoard( t *testing.T ) {
@@ -8,7 +8,7 @@ func TestGameBoard( t *testing.T ) {
 
   t.Log( "Board() returns the game's board instance" )
   var board *Board = game.Board()
-  assert.Equals( t, game.Board(), board )
+  assert.Equal( t, game.Board(), board )
 }
 
 func TestGameIsOver( t *testing.T ) {
@@ -72,14 +72,14 @@ func TestGameApplyMove( t *testing.T ) {
   t.Log( "ApplyMove() applies the selected mark to the board" )
   game.ApplyMove( 0, "X" )
   game.ApplyMove( 1, "O" )
-  assert.Equals( t, board.Spaces()[0], "X" )
-  assert.Equals( t, board.Spaces()[1], "O" )
+  assert.Equal( t, board.Spaces()[0], "X" )
+  assert.Equal( t, board.Spaces()[1], "O" )
 
   t.Log( "ApplyMove() rejects moves for non-blank spaces" )
   game.ApplyMove( 1, "X" )
   game.ApplyMove( 0, "O" )
-  assert.Equals( t, board.Spaces()[0], "X" )
-  assert.Equals( t, board.Spaces()[1], "O" )
+  assert.Equal( t, board.Spaces()[0], "X" )
+  assert.Equal( t, board.Spaces()[1], "O" )
 }
 
 func TestGameReset( t *testing.T ) {
@@ -90,6 +90,6 @@ func TestGameReset( t *testing.T ) {
   game.ApplyMove( 0, "X" )
   game.ApplyMove( 1, "O" )
   game.Reset()
-  assert.Equals( t, board.Spaces()[0], board.Blank() )
-  assert.Equals( t, board.Spaces()[1], board.Blank() )
+  assert.Equal( t, board.Spaces()[0], board.Blank() )
+  assert.Equal( t, board.Spaces()[1], board.Blank() )
 }
