@@ -78,6 +78,18 @@ func TestGameApplyMove( t *testing.T ) {
   assert.Equals( t, board.Spaces()[1], "O" )
 }
 
+func TestGameReset( t *testing.T ) {
+  var game  = NewGame()
+  var board = game.Board()
+
+  t.Log( "Reset() clears the board" )
+  game.ApplyMove( 0, "X" )
+  game.ApplyMove( 1, "O" )
+  game.Reset()
+  assert.Equals( t, board.Spaces()[0], board.Blank() )
+  assert.Equals( t, board.Spaces()[1], board.Blank() )
+}
+
 func AddMarks( b *Board, set []int, mark string ) {
   for _,p := range set {
     b.Mark( p, mark )

@@ -36,6 +36,10 @@ func ( g *game ) ApplyMove( pos int, mark string ) {
   }
 }
 
+func ( g *game ) Reset() {
+  g.board.Reset()
+}
+
 // PRIVATE
 
 func boardIsFull( board *Board ) bool {
