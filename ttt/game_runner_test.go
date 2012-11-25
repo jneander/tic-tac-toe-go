@@ -47,10 +47,6 @@ func TestGameRunnerStart( t *testing.T ) {
   assert.Equal( t, game.Board().Spaces()[0], "X" )
   assert.Equal( t, game.Board().Spaces()[1], "O" )
   assert.Equal( t, game.Board().Spaces()[1], "O" )
-
-  t.Log( "GameRunner stores references to UI and Game" )
-  assert.Equal( t, runner.UI, ui )
-  assert.Equal( t, runner.Game, game )
 }
 
 func prepareRunner( ui UI, game Game ) *GameRunner {
