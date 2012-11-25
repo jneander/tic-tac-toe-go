@@ -1,5 +1,6 @@
 package ttt
 
+import sassert "github.com/sdegutis/go.assert"
 import "github.com/stretchrcom/testify/assert"
 import "testing"
 import "bytes"
@@ -47,6 +48,19 @@ func TestGameRunnerStart( t *testing.T ) {
   assert.Equal( t, game.Board().Spaces()[0], "X" )
   assert.Equal( t, game.Board().Spaces()[1], "O" )
   assert.Equal( t, game.Board().Spaces()[1], "O" )
+
+  t.Log( "displays the board before prompting for moves" )
+  game.Reset()
+  mui := NewConsoleUISpy( &in, &out )
+  runner = prepareRunner( mui, game )
+  SetInputs( &in, "0", "1", "3", "4", "6" )
+  runner.Start()
+  expected := []string{ "DisplayBoard", "PromptPlayerMove", "DisplayBoard",
+  "PromptPlayerMove", "DisplayBoard" }
+  sassert.DeepEquals( t, mui.methodCalls[:5], expected )
+
+  t.Log( "displays the board after the game is over" )
+  assert.Equal( t, mui.methodCalls[len(mui.methodCalls) - 1], "DisplayBoard" )
 }
 
 func prepareRunner( ui UI, game Game ) *GameRunner {
@@ -69,4 +83,33 @@ func SetInputs( input *bytes.Buffer, data ...string ) {
     result += v + "\n"
   }
   input.WriteString( result )
+}
+
+func NewConsoleUISpy( in Reader, out Writer ) *consoleSpy {
+  spy := new( consoleSpy )
+  spy.ui = new( ConsoleUI )
+  spy.ui.in = in
+  spy.ui.out = out
+  return spy
+}
+
+type consoleSpy struct {
+  ui *ConsoleUI
+  methodCalls []string
+}
+
+func ( spy *consoleSpy ) LogMethodCall( call string ) {
+  newLog := make( []string, len( spy.methodCalls ) + 1 )
+  copy( newLog, spy.methodCalls )
+  newLog[ len(spy.methodCalls) ] = call
+  spy.methodCalls = newLog
+}
+
+func ( spy *consoleSpy ) DisplayBoard( board *Board ) {
+  spy.LogMethodCall( "DisplayBoard" )
+}
+func ( spy *consoleSpy ) PromptMainMenu() {}
+func ( spy *consoleSpy ) PromptPlayerMove ( valid ...interface{} ) int {
+  spy.LogMethodCall( "PromptPlayerMove" )
+  return spy.ui.PromptPlayerMove( valid... )
 }
