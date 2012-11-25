@@ -17,10 +17,10 @@ func NewConsole( in Reader, out Writer ) *Console {
 }
 
 func ( c Console ) PromptMainMenu() int {
-  message := "Welcome to Tic Tac Toe in Go!\n" +
-             "Enter one of the following options:\n" +
-             "1) Player vs Player\n" +
-             "2) Exit\n\n"
+  message := "\nWelcome to Tic Tac Toe in Go!\n" +
+              "1) Player vs Player\n" +
+              "2) Exit\n\n" +
+              "Please enter your choice: "
   result := promptForInput( c, message, 1, 2 )
   switch result {
   case 1:
