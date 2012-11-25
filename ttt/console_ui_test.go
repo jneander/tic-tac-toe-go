@@ -8,6 +8,12 @@ var in   bytes.Buffer
 var out  bytes.Buffer
 var ui UI = ConsoleUI{ &in, &out }
 
+func TestNewConsoleUI( t *testing.T ) {
+  var ui *ConsoleUI = NewConsoleUI( &in, &out )
+  assert.Equals( t, ui.in, &in )
+  assert.Equals( t, ui.out, &out )
+}
+
 func TestConsoleUiPromptMainMenu( t *testing.T ) {
   in.WriteString( "any key...\n" )
   expected := "Welcome to Tic Tac Toe in Go!\n" +

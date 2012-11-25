@@ -9,6 +9,13 @@ type ConsoleUI struct {
   out Writer
 }
 
+func NewConsoleUI( in Reader, out Writer ) *ConsoleUI {
+  var ui = new( ConsoleUI )
+  ui.in = in
+  ui.out = out
+  return ui
+}
+
 func ( c ConsoleUI ) PromptMainMenu() {
   message := "Welcome to Tic Tac Toe in Go!\nPress any key to exit... "
   c.out.WriteString( message )
