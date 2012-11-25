@@ -27,7 +27,7 @@ func TestConsoleUiPromptMainMenu( t *testing.T ) {
 
   t.Log( "#PromptMainMenu accepts only options listed" )
   SetInputString( &in, "3\n5\n2\nunread" )
-  assert.Equals( t, ui.PromptMainMenu(), 2 )
+  assert.Equals( t, ui.PromptMainMenu(), EXIT_GAME )
 }
 
 func TestConsoleUiDisplayBoard( t *testing.T ) {

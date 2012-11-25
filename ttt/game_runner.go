@@ -7,8 +7,8 @@ type GameRunner struct {
 
 func ( runner *GameRunner ) Start() {
   p1, p2 := "X", "O"
-  choice := runner.UI.PromptMainMenu()
-  if choice != 2 {
+
+  if runner.UI.PromptMainMenu() != EXIT_GAME {
     for !runner.Game.IsOver() {
       runner.UI.DisplayAvailableSpaces( runner.Game.Board() )
       move := runner.UI.PromptPlayerMove()

@@ -1,5 +1,9 @@
 package ttt
 
+const (
+  EXIT_GAME = iota
+)
+
 type UI interface {
   PromptMainMenu() int
   DisplayBoard( *Board )
