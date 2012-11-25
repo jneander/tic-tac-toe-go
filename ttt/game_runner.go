@@ -1,8 +1,8 @@
-package tictactoe
+package ttt
 
 type GameRunner struct {
   Game Game
-  UI Ui
+  UI UI
 }
 
 func ( runner *GameRunner ) Start() {

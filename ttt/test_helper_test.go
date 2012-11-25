@@ -1,4 +1,4 @@
-package tictactoe
+package ttt
 
 import "github.com/stretchrcom/testify/assert"
 import "testing"

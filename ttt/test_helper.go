@@ -1,4 +1,4 @@
-package tictactoe
+package ttt
 
 type Queue struct {
   queue []interface{}

@@ -1,4 +1,4 @@
-package tictactoe
+package ttt
 
 import "io"
 import "strings"
