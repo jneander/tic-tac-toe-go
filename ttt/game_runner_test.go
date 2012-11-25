@@ -52,12 +52,13 @@ func TestGameRunnerStart( t *testing.T ) {
   t.Log( "displays the board before prompting for moves" )
   game.Reset()
   mui := NewConsoleUISpy( &in, &out )
+  mui.SpyOn( "DisplayAvailableSpaces", "PromptPlayerMove", "DisplayBoard" )
   runner = prepareRunner( mui, game )
   SetInputs( &in, "1", "2", "4", "5", "7" )
   runner.Start()
-  expected := []string{ "DisplayBoard", "PromptPlayerMove", "DisplayBoard",
-                        "PromptPlayerMove", "DisplayBoard" }
-  sassert.DeepEquals( t, mui.methodCalls[:5], expected )
+  expected := []string{ "DisplayAvailableSpaces", "PromptPlayerMove",
+                        "DisplayAvailableSpaces", "PromptPlayerMove" }
+  sassert.DeepEquals( t, mui.methodCalls[:4], expected )
 
   t.Log( "displays the board after the game is over" )
   assert.Equal( t, mui.methodCalls[len(mui.methodCalls) - 1], "DisplayBoard" )
@@ -90,12 +91,14 @@ func NewConsoleUISpy( in Reader, out Writer ) *consoleSpy {
   spy.ui = new( ConsoleUI )
   spy.ui.in = in
   spy.ui.out = out
+  spy.activeSpies = make( map[string]bool )
   return spy
 }
 
 type consoleSpy struct {
   ui *ConsoleUI
   methodCalls []string
+  activeSpies map[string]bool
 }
 
 func ( spy *consoleSpy ) LogMethodCall( call string ) {
@@ -105,12 +108,26 @@ func ( spy *consoleSpy ) LogMethodCall( call string ) {
   spy.methodCalls = newLog
 }
 
-func ( spy *consoleSpy ) DisplayAvailableSpaces( board *Board ) {}
+func ( spy *consoleSpy ) SpyOn( methods ...string ) {
+  for _,v := range methods {
+    spy.activeSpies[ v ] = true
+  }
+}
+
+func ( spy *consoleSpy ) DisplayAvailableSpaces( board *Board ) {
+  if spy.activeSpies[ "DisplayAvailableSpaces" ] {
+    spy.LogMethodCall( "DisplayAvailableSpaces" )
+  }
+}
 func ( spy *consoleSpy ) DisplayBoard( board *Board ) {
-  spy.LogMethodCall( "DisplayBoard" )
+  if spy.activeSpies[ "DisplayBoard" ] {
+    spy.LogMethodCall( "DisplayBoard" )
+  }
 }
 func ( spy *consoleSpy ) PromptMainMenu() {}
 func ( spy *consoleSpy ) PromptPlayerMove ( valid ...interface{} ) int {
-  spy.LogMethodCall( "PromptPlayerMove" )
+  if spy.activeSpies[ "PromptPlayerMove" ] {
+    spy.LogMethodCall( "PromptPlayerMove" )
+  }
   return spy.ui.PromptPlayerMove( valid... )
 }

@@ -8,7 +8,7 @@ type GameRunner struct {
 func ( runner *GameRunner ) Start() {
   p1, p2 := "X", "O"
   for !runner.Game.IsOver() {
-    runner.UI.DisplayBoard( runner.Game.Board() )
+    runner.UI.DisplayAvailableSpaces( runner.Game.Board() )
     move := runner.UI.PromptPlayerMove()
     if runner.Game.IsValidMove( move ) {
       runner.Game.ApplyMove( move, p1 )
