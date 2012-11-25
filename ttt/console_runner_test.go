@@ -5,14 +5,14 @@ import "github.com/stretchrcom/testify/assert"
 import "testing"
 import "bytes"
 
-func TestGameRunnerStart( t *testing.T ) {
+func TestConsoleRunnerStart( t *testing.T ) {
   var in  bytes.Buffer
   var out bytes.Buffer
   var ui = &ConsoleUI{ &in, &out }
   var game = NewGame()
   runner := prepareRunner( ui, game )
 
-  t.Log( "GameRunner stores references to UI and Game" )
+  t.Log( "ConsoleRunner stores references to UI and Game" )
   assert.Equal( t, runner.UI, ui )
   assert.Equal( t, runner.Game, game )
 
@@ -73,8 +73,8 @@ func TestGameRunnerStart( t *testing.T ) {
   assert.Equal( t, mui.methodCalls[len(mui.methodCalls) - 1], "DisplayBoard" )
 }
 
-func prepareRunner( ui UI, game Game ) *GameRunner {
-  runner := new( GameRunner )
+func prepareRunner( ui UI, game Game ) *ConsoleRunner {
+  runner := new( ConsoleRunner )
   runner.UI = ui
   runner.Game = game
   return runner

@@ -1,11 +1,11 @@
 package ttt
 
-type GameRunner struct {
+type ConsoleRunner struct {
   Game Game
   UI UI
 }
 
-func ( runner *GameRunner ) Start() {
+func ( runner *ConsoleRunner ) Start() {
   p1, p2 := "X", "O"
 
   if runner.UI.PromptMainMenu() != EXIT_GAME {
