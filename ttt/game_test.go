@@ -59,6 +59,10 @@ func TestGameIsValidMove( t *testing.T ) {
   board.Mark( 2, "O" )
   assert.False( t, game.IsValidMove( 1 ) )
   assert.False( t, game.IsValidMove( 2 ) )
+
+  t.Log( "IsValidMove() returns false if the provided index is out of range" )
+  assert.False( t, game.IsValidMove( -1 ) )
+  assert.False( t, game.IsValidMove( 9 ) )
 }
 
 func TestGameApplyMove( t *testing.T ) {

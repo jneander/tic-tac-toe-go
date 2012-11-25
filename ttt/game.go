@@ -27,7 +27,8 @@ func ( g *game ) IsOver() bool {
 
 func ( g *game ) IsValidMove( space int ) bool {
   board := g.board
-  return board.Spaces()[ space ] == board.Blank()
+  isInRange := space >= 0 && space < len( board.Spaces() )
+  return isInRange && board.Spaces()[ space ] == board.Blank()
 }
 
 func ( g *game ) ApplyMove( pos int, mark string ) {
