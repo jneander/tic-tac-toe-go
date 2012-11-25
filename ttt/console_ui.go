@@ -28,8 +28,9 @@ func ( c ConsoleUI ) DisplayBoard( b *Board ) {
   for i := range rows {
     rows[i] = strings.Join( spaces[i*3:i*3+3], "|" )
     rows[i] = strings.Replace( rows[i], b.Blank(), "_", -1 )
+    rows[i] = "     " + rows[i]
   }
-  c.out.WriteString( strings.Join( rows, "\n" ) + "\n" )
+  c.out.WriteString( "\n" + strings.Join( rows, "\n" ) + "\n\n" )
 }
 
 func ( c ConsoleUI ) PromptPlayerMove( filter ...interface{} ) int {
