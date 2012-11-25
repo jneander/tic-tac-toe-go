@@ -19,13 +19,13 @@ func TestGameRunnerStart( t *testing.T ) {
   t.Log( "applies a mark to the selected space" )
   MakeMoves( game, "X", 0, 1, 5, 6 )
   MakeMoves( game, "O", 2, 3, 4, 7 )
-  SetInputs( &in, "8" )
+  SetInputs( &in, "9" )
   runner.Start()
   assert.Equal( t, game.Board().Spaces()[8], "X" )
 
   t.Log( "applies alternating marks for successive spaces" )
   game.Reset()
-  SetInputs( &in, "2", "0", "3", "1", "4", "5", "7", "6", "8" )
+  SetInputs( &in, "3", "1", "4", "2", "5", "6", "8", "7", "9" )
   runner.Start()
   assert.Equal( t, game.Board().Spaces()[2], "X" )
   assert.Equal( t, game.Board().Spaces()[0], "O" )
@@ -35,7 +35,7 @@ func TestGameRunnerStart( t *testing.T ) {
   t.Log( "stops applying moves when game is over" )
   game.Reset()
   MakeMoves( game, "X", 1, 4 )
-  SetInputs( &in, "7", "8", "0" )
+  SetInputs( &in, "8", "9", "1" )
   runner.Start()
   assert.True( t, game.IsOver() )
   assert.Equal( t, game.Board().Spaces()[8], game.Board().Blank() )
@@ -43,7 +43,7 @@ func TestGameRunnerStart( t *testing.T ) {
 
   t.Log( "rejects invalid moves" )
   game.Reset()
-  SetInputs( &in, "0", "0", "1", "3", "4", "3", "6" )
+  SetInputs( &in, "1", "1", "2", "4", "5", "4", "7" )
   runner.Start()
   assert.Equal( t, game.Board().Spaces()[0], "X" )
   assert.Equal( t, game.Board().Spaces()[1], "O" )
@@ -53,7 +53,7 @@ func TestGameRunnerStart( t *testing.T ) {
   game.Reset()
   mui := NewConsoleUISpy( &in, &out )
   runner = prepareRunner( mui, game )
-  SetInputs( &in, "0", "1", "3", "4", "6" )
+  SetInputs( &in, "1", "2", "4", "5", "7" )
   runner.Start()
   expected := []string{ "DisplayBoard", "PromptPlayerMove", "DisplayBoard",
   "PromptPlayerMove", "DisplayBoard" }

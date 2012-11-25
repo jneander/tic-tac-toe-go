@@ -44,6 +44,7 @@ func ( c ConsoleUI ) PromptPlayerMove( filter ...interface{} ) int {
 
     if err != nil { continue }
 
+    conv--
     if len( filter ) == 0 {
       return conv
     } else if arrayPosition( filter, conv ) > -1 {
@@ -66,7 +67,7 @@ func availableSpacesToASCII( board *Board ) []string {
   indices := make( []string, 9 )
   for i := range indices {
     if board.Spaces()[i] == board.Blank() {
-      indices[i] = strconv.Itoa(i)
+      indices[i] = strconv.Itoa(i + 1)
     } else {
       indices[i] = " "
     }

@@ -45,18 +45,18 @@ func TestConsoleUiDisplayAvailableSpaces( t *testing.T ) {
 
   t.Log( "DisplayAvailableSpaces() prints board and all spaces" )
   ui.DisplayAvailableSpaces( board )
-  expected := "\n     _|_|_     0 1 2\n" +
-                "     _|_|_     3 4 5\n" +
-                "     _|_|_     6 7 8\n\n"
+  expected := "\n     _|_|_     1 2 3\n" +
+                "     _|_|_     4 5 6\n" +
+                "     _|_|_     7 8 9\n\n"
   assert.Equals( t, ReadInput( &out ), expected )
 
   t.Log( "DisplayAvailableSpaces() prints board and all spaces" )
   AddMarks( board, "X", 4, 8 )
   AddMarks( board, "O", 5, 6 )
   ui.DisplayAvailableSpaces( board )
-  expected = "\n     _|_|_     0 1 2\n" +
-               "     _|X|O     3    \n" +
-               "     O|_|X       7  \n\n"
+  expected = "\n     _|_|_     1 2 3\n" +
+               "     _|X|O     4    \n" +
+               "     O|_|X       8  \n\n"
   assert.Equals( t, ReadInput( &out ), expected )
 }
 
@@ -68,23 +68,23 @@ func TestConsoleUiPromptPlayerMove( t *testing.T ) {
   assert.Equals( t, ReadInput( &out ), expected )
 
   t.Log( "PromptPlayerMove() reprints the prompt after invalid input" )
-  SetInputString( &in, "\n4" )
+  SetInputString( &in, "\n5" )
   ui.PromptPlayerMove()
   expected = "Please enter the space for your mark: "
   expected += expected
   assert.Equals( t, ReadInput( &out ), expected )
 
   t.Log( "PromptPlayerMove() returns the user's input" )
-  SetInputString( &in, "4\n5\n" )
+  SetInputString( &in, "5\n6\n" )
   assert.Equals( t, ui.PromptPlayerMove(), 4 )
   assert.Equals( t, ui.PromptPlayerMove(), 5 )
 
   t.Log( "PromptPlayerMove() rejects input not found in optional filter list" )
-  SetInputString( &in, "3\n5\n7" )
+  SetInputString( &in, "4\n6\n8" )
   assert.Equals( t, ui.PromptPlayerMove( 4, 5, 6 ), 5 )
 
   t.Log( "PromptPlayerMove() rejects invalid input" )
-  SetInputString( &in, "\ninvalid\n5" )
+  SetInputString( &in, "\ninvalid\n6" )
   assert.Equals( t, ui.PromptPlayerMove(), 5 )
 }
 
