@@ -4,19 +4,19 @@ import "io"
 import "strings"
 import "strconv"
 
-type Console struct {
+type console struct {
   in  Reader
   out Writer
 }
 
-func NewConsole( in Reader, out Writer ) *Console {
-  var ui = new( Console )
+func NewConsole( in Reader, out Writer ) *console {
+  var ui = new( console )
   ui.in = in
   ui.out = out
   return ui
 }
 
-func ( c Console ) PromptMainMenu() int {
+func ( c console ) PromptMainMenu() int {
   message := "\nWelcome to Tic Tac Toe in Go!\n" +
               "1) Player vs Player\n" +
               "2) Exit\n\n" +
@@ -31,7 +31,7 @@ func ( c Console ) PromptMainMenu() int {
   return result
 }
 
-func ( c Console ) DisplayAvailableSpaces( b *Board ) {
+func ( c console ) DisplayAvailableSpaces( b *Board ) {
   rows := boardToASCII( b )
   vrows := availableSpacesToASCII( b )
   for i := range rows {
@@ -40,18 +40,20 @@ func ( c Console ) DisplayAvailableSpaces( b *Board ) {
   c.out.WriteString( "\n" + strings.Join( rows, "\n" ) + "\n\n" )
 }
 
-func ( c Console ) DisplayBoard( b *Board ) {
+func ( c console ) DisplayBoard( b *Board ) {
   rows := boardToASCII( b )
   for i := range rows { rows[i] = "     " + rows[i] }
   c.out.WriteString( "\n" + strings.Join( rows, "\n" ) + "\n\n" )
 }
 
-func ( c Console ) PromptPlayerMove( filter ...interface{} ) int {
+func ( c console ) PromptPlayerMove( filter ...interface{} ) int {
   message := "Please enter the space for your mark: "
   return promptForInput( c, message, filter... ) - 1
 }
 
-func promptForInput( c Console, message string, filter ...interface{} ) int {
+// PRIVATE
+
+func promptForInput( c console, message string, filter ...interface{} ) int {
   for {
     c.out.WriteString( message )
     conv,err := strconv.Atoi( ReadLine( c.in ) )

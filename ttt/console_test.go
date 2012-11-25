@@ -6,13 +6,7 @@ import "bytes"
 
 var in   bytes.Buffer
 var out  bytes.Buffer
-var ui UI = Console{ &in, &out }
-
-func TestNewConsole( t *testing.T ) {
-  var ui *Console = NewConsole( &in, &out )
-  assert.Equal( t, ui.in, &in )
-  assert.Equal( t, ui.out, &out )
-}
+var ui UI = NewConsole( &in, &out )
 
 func TestConsoleUiPromptMainMenu( t *testing.T ) {
   t.Log( "#PromptMainMenu displays a prompt message" )

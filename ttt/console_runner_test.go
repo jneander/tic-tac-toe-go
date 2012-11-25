@@ -8,7 +8,7 @@ import "bytes"
 func TestConsoleRunnerStart( t *testing.T ) {
   var in  bytes.Buffer
   var out bytes.Buffer
-  var ui = &Console{ &in, &out }
+  var ui = NewConsole( &in, &out )
   var game = NewGame()
   runner := prepareRunner( ui, game )
 
@@ -97,15 +97,13 @@ func SetInputs( input *bytes.Buffer, data ...string ) {
 
 func NewConsoleSpy( in Reader, out Writer ) *consoleSpy {
   spy := new( consoleSpy )
-  spy.ui = new( Console )
-  spy.ui.in = in
-  spy.ui.out = out
+  spy.ui = NewConsole( in, out )
   spy.activeSpies = make( map[string]bool )
   return spy
 }
 
 type consoleSpy struct {
-  ui *Console
+  ui UI
   methodCalls []string
   activeSpies map[string]bool
 }
