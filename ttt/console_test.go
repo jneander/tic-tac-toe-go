@@ -8,7 +8,7 @@ var in   bytes.Buffer
 var out  bytes.Buffer
 var ui UI = NewConsole( &in, &out )
 
-func TestConsoleUiPromptMainMenu( t *testing.T ) {
+func TestConsolePromptMainMenu( t *testing.T ) {
   t.Log( "#PromptMainMenu displays a prompt message" )
   SetInputs( &in, "2" )
   expected := "\nWelcome to Tic Tac Toe in Go!\n" +
@@ -24,7 +24,7 @@ func TestConsoleUiPromptMainMenu( t *testing.T ) {
   assert.Equal( t, ui.PromptMainMenu(), EXIT_GAME )
 }
 
-func TestConsoleUiDisplayBoard( t *testing.T ) {
+func TestConsoleDisplayBoard( t *testing.T ) {
   board := NewBoard()
 
   t.Log( "DisplayBoard() prints an empty board" )
@@ -42,7 +42,7 @@ func TestConsoleUiDisplayBoard( t *testing.T ) {
   assert.Equal( t, ReadInput( &out ), expected )
 }
 
-func TestConsoleUiDisplayAvailableSpaces( t *testing.T ) {
+func TestConsoleDisplayAvailableSpaces( t *testing.T ) {
   board := NewBoard()
 
   t.Log( "DisplayAvailableSpaces() prints board and all spaces" )
@@ -62,7 +62,7 @@ func TestConsoleUiDisplayAvailableSpaces( t *testing.T ) {
   assert.Equal( t, ReadInput( &out ), expected )
 }
 
-func TestConsoleUiPromptPlayerMove( t *testing.T ) {
+func TestConsolePromptPlayerMove( t *testing.T ) {
   t.Log( "PromptPlayerMove() prints a prompt" )
   SetInputs( &in, "4" )
   ui.PromptPlayerMove()
