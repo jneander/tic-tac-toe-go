@@ -20,6 +20,17 @@ func ( b *Board ) Mark( pos int, mark string ) {
   }
 }
 
+func ( b Board ) SpacesWithMark( mark string ) []int {
+  count, result := 0, make( []int, len(b.Spaces()) )
+  for i,v := range b.Spaces() {
+    if v == mark {
+      result[count] = i
+      count++
+    }
+  }
+  return result[:count]
+}
+
 func ( b *Board ) Reset() {
   setBoard( b )
 }

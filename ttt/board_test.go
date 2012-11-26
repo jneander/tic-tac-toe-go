@@ -70,3 +70,13 @@ func TestBoardReset( t *testing.T ) {
   board.Reset()
   sassert.DeepEquals( t, board.Spaces(), spaces )
 }
+
+func TestBoardSpacesWithMark( t *testing.T ) {
+  board := NewBoard()
+  sassert.DeepEquals( t, board.SpacesWithMark( "X" ), []int{} )
+  AddMarks( board, "X", 1, 3, 5 )
+  AddMarks( board, "O", 2, 4, 8 )
+  sassert.DeepEquals( t, board.SpacesWithMark( "X" ), []int{ 1, 3, 5 } )
+  sassert.DeepEquals( t, board.SpacesWithMark( "O" ), []int{ 2, 4, 8 } )
+  sassert.DeepEquals( t, board.SpacesWithMark( board.Blank() ), []int{ 0, 6, 7 } )
+}
