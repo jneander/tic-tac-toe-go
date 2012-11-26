@@ -70,16 +70,16 @@ func TestConsoleUiPromptPlayerMove( t *testing.T ) {
   assert.Equal( t, ReadInput( &out ), expected )
 
   t.Log( "PromptPlayerMove() reprints the prompt after invalid input" )
-  SetInputString( &in, "\n5" )
+  SetInputs( &in, "", "5" )
   ui.PromptPlayerMove()
   expected = "Please enter the space for your mark: "
   expected += expected
   assert.Equal( t, ReadInput( &out ), expected )
 
   t.Log( "PromptPlayerMove() returns the user's input" )
-  SetInputString( &in, "5\n6\n" )
-  assert.Equal( t, ui.PromptPlayerMove(), 5 - 1 )
-  assert.Equal( t, ui.PromptPlayerMove(), 6 - 1 )
+  SetInputs( &in, MovesAsInput( 5, 6 )... )
+  assert.Equal( t, ui.PromptPlayerMove(), 5 )
+  assert.Equal( t, ui.PromptPlayerMove(), 6 )
 
   t.Log( "PromptPlayerMove() rejects input not found in optional filter list" )
   SetInputString( &in, "3\n5\n7" )
