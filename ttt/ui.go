@@ -2,7 +2,8 @@ package ttt
 
 const (
   EXIT_GAME = iota
-  PVP
+  P_V_P
+  P_V_DUMB
 )
 
 type UI interface {

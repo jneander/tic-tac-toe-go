@@ -22,7 +22,7 @@ func TestConsoleRunnerRun( t *testing.T ) {
   assert.Equal( t, len( *console.SpyLog() ), 0 )
 
   // Enter a Player vs Player loop
-  console.StubPromptMainMenu( PVP )
+  console.StubPromptMainMenu( P_V_P )
 
   t.Log( "applies alternating marks for successive spaces" )
   game.Reset()
