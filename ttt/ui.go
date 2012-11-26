@@ -8,7 +8,7 @@ const (
 type UI interface {
   PromptMainMenu() int
   DisplayBoard( *Board )
-  PromptPlayerMove( ...interface{} ) int
+  PromptPlayerMove( ...int ) int
   DisplayAvailableSpaces( *Board )
 }
 

@@ -46,14 +46,14 @@ func ( c console ) DisplayBoard( b *Board ) {
   c.out.WriteString( "\n" + strings.Join( rows, "\n" ) + "\n\n" )
 }
 
-func ( c console ) PromptPlayerMove( filter ...interface{} ) int {
+func ( c console ) PromptPlayerMove( filter ...int ) int {
   message := "Please enter the space for your mark: "
   return promptForInput( c, message, filter... ) - 1
 }
 
 // PRIVATE
 
-func promptForInput( c console, message string, filter ...interface{} ) int {
+func promptForInput( c console, message string, filter ...int ) int {
   for {
     c.out.WriteString( message )
     conv,err := strconv.Atoi( ReadLine( c.in ) )
@@ -62,7 +62,7 @@ func promptForInput( c console, message string, filter ...interface{} ) int {
 
     if len( filter ) == 0 {
       return conv
-    } else if arrayPosition( filter, conv ) > -1 {
+    } else if integerArrayPosition( filter, conv ) > -1 {
       return conv
     }
   }
@@ -94,7 +94,7 @@ func availableSpacesToASCII( board *Board ) []string {
   return rows
 }
 
-func arrayPosition( array []interface{}, element interface{} ) int {
+func integerArrayPosition( array []int, element int ) int {
   var pos = -1
   for i,v := range array {
     if v == element {

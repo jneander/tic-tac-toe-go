@@ -140,7 +140,7 @@ func ( spy *consoleSpy ) PromptMainMenu() int {
   return spy.ui.PromptMainMenu()
 }
 
-func ( spy *consoleSpy ) PromptPlayerMove ( valid ...interface{} ) int {
+func ( spy *consoleSpy ) PromptPlayerMove ( valid ...int ) int {
   if spy.activeSpies[ "PromptPlayerMove" ] {
     spy.LogMethodCall( "PromptPlayerMove" )
   }
