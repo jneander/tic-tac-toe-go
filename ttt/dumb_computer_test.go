@@ -24,3 +24,11 @@ func TestDumbComputerMove( t *testing.T ) {
   }
   assert.DeepEquals( t, moves, []int{ 1,0,1,0,1,0,1,1,0 } )
 }
+
+func TestDumbComputerMark( t *testing.T ) {
+  var computer = NewDumbComputer()
+  computer.SetMark( "X" )
+  assert.Equals( t, computer.GetMark(), "X" )
+  computer.SetMark( "O" )
+  assert.Equals( t, computer.GetMark(), "O" )
+}
