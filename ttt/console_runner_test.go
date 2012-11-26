@@ -1,32 +1,34 @@
 package ttt
 
-import sassert "github.com/sdegutis/go.assert"
 import "github.com/stretchrcom/testify/assert"
 import "testing"
-import "bytes"
 
-func TestConsoleRunnerStart( t *testing.T ) {
-  var in  bytes.Buffer
-  var out bytes.Buffer
-  var ui = NewConsole( &in, &out )
+func TestConsoleRunnerRun( t *testing.T ) {
+  var console = NewFakeConsole()
   var game = NewGame()
-  runner := prepareRunner( ui, game )
+  var p1, p2 = new( FakePlayer ), new( FakePlayer )
+  var players = []Player{ p1, p2 }
+  p1.SetMark( "X" )
+  p2.SetMark( "O" )
 
-  t.Log( "ConsoleRunner stores references to UI and Game" )
-  assert.Equal( t, runner.UI, ui )
-  assert.Equal( t, runner.Game, game )
+  var runner = ConsoleRunner{ game, console, players }
 
-  t.Log( "applies a mark to the selected space" )
-  MakeMoves( game, "X", 0, 1, 5, 6 )
-  MakeMoves( game, "O", 2, 3, 4, 7 )
-  SetInputs( &in, MovesAsInput( 0, 8 )... )
-  runner.Start()
-  assert.Equal( t, game.Board().Spaces()[8], "X" )
+  // Exit the game
+  console.StubPromptMainMenu( EXIT_GAME )
+
+  t.Log( "exits immediately upon 'exit game' menu selection" )
+  console.SpyOn( "DisplayAvailableSpaces", "DisplayBoard" )
+  runner.Run()
+  assert.Equal( t, len( *console.SpyLog() ), 0 )
+
+  // Enter a Player vs Player loop
+  console.StubPromptMainMenu( PVP )
 
   t.Log( "applies alternating marks for successive spaces" )
   game.Reset()
-  SetInputs( &in, MovesAsInput( 0, 2, 0, 3, 1, 4, 5, 7, 6, 8 )... )
-  runner.Start()
+  p1.StubMoves( 2, 3, 4, 7, 8 )
+  p2.StubMoves( 0, 1, 5, 6 )
+  runner.Run()
   assert.Equal( t, game.Board().Spaces()[2], "X" )
   assert.Equal( t, game.Board().Spaces()[0], "O" )
   assert.Equal( t, game.Board().Spaces()[3], "X" )
@@ -34,115 +36,37 @@ func TestConsoleRunnerStart( t *testing.T ) {
 
   t.Log( "stops applying moves when game is over" )
   game.Reset()
-  MakeMoves( game, "X", 1, 4 )
-  SetInputs( &in, MovesAsInput( 0, 7, 8, 0 )... )
-  runner.Start()
+  game.ApplyMove( 1, "X" )
+  game.ApplyMove( 4, "X" )
+  p1.StubMoves( 7, 0 )
+  p2.StubMoves( 8 )
+  runner.Run()
   assert.True( t, game.IsOver() )
   assert.Equal( t, game.Board().Spaces()[8], game.Board().Blank() )
   assert.Equal( t, game.Board().Spaces()[0], game.Board().Blank() )
 
   t.Log( "rejects invalid moves" )
   game.Reset()
-  SetInputs( &in, MovesAsInput( 0, 0, 0, 1, 3, 4, 3, 6 )... )
-  runner.Start()
+  p1.StubMoves( 0, 1, -1, 4, 8 )
+  p2.StubMoves( 0, 1, 6 )
+  runner.Run()
   assert.Equal( t, game.Board().Spaces()[0], "X" )
   assert.Equal( t, game.Board().Spaces()[1], "O" )
-  assert.Equal( t, game.Board().Spaces()[4], "O" )
+  assert.Equal( t, game.Board().Spaces()[4], "X" )
 
-  t.Log( "prompts with the main menu" )
-  mui := NewConsoleSpy( &in, &out )
-  mui.SpyOn( "PromptMainMenu", "DisplayAvailableSpaces",
-             "PromptPlayerMove", "DisplayBoard" )
-  runner = prepareRunner( mui, game )
-  SetInputs( &in, "2" )
-  runner.Start()
-  assert.Equal( t, mui.methodCalls[0], "PromptMainMenu" )
-
-  t.Log( "displays the board before prompting for moves" )
+  t.Log( "displays the available spaces before each move" )
   game.Reset()
-  mui = NewConsoleSpy( &in, &out )
-  mui.SpyOn( "DisplayAvailableSpaces", "PromptPlayerMove", "DisplayBoard" )
-  runner = prepareRunner( mui, game )
-  SetInputs( &in, MovesAsInput( 0, 0, 1, 3, 4, 6 )... )
-  runner.Start()
-  expected := []string{ "DisplayAvailableSpaces", "PromptPlayerMove",
-                        "DisplayAvailableSpaces", "PromptPlayerMove" }
-  sassert.DeepEquals( t, mui.methodCalls[:4], expected )
+  console.ResetSpies()
+  console.SpyOn( "DisplayAvailableSpaces" )
+  p1.StubMoves( 0, 1, -1, 4, 8 )
+  p2.StubMoves( 0, 1, 6 )
+  runner.Run()
+  // TODO confirm that this call takes place before each move request
+  assert.Equal( t, console.TimesCalled( "DisplayAvailableSpaces" ), 8 )
 
-  t.Log( "displays the board after the game is over" )
-  assert.Equal( t, mui.methodCalls[len(mui.methodCalls) - 1], "DisplayBoard" )
-}
-
-func prepareRunner( ui UI, game Game ) *ConsoleRunner {
-  runner := new( ConsoleRunner )
-  runner.UI = ui
-  runner.Game = game
-  return runner
-}
-
-func MakeMoves( game Game, mark string, spaces ...int ) {
-  for _,i := range spaces {
-    game.ApplyMove( i, mark )
-  }
-}
-
-func SetInputs( input *bytes.Buffer, data ...string ) {
-  input.Reset();
-  var result string
-  for _,v := range data {
-    result += v + "\n"
-  }
-  input.WriteString( result )
-}
-
-func NewConsoleSpy( in Reader, out Writer ) *consoleSpy {
-  spy := new( consoleSpy )
-  spy.ui = NewConsole( in, out )
-  spy.activeSpies = make( map[string]bool )
-  return spy
-}
-
-type consoleSpy struct {
-  ui UI
-  methodCalls []string
-  activeSpies map[string]bool
-}
-
-func ( spy *consoleSpy ) LogMethodCall( call string ) {
-  newLog := make( []string, len( spy.methodCalls ) + 1 )
-  copy( newLog, spy.methodCalls )
-  newLog[ len(spy.methodCalls) ] = call
-  spy.methodCalls = newLog
-}
-
-func ( spy *consoleSpy ) SpyOn( methods ...string ) {
-  for _,v := range methods {
-    spy.activeSpies[ v ] = true
-  }
-}
-
-func ( spy *consoleSpy ) DisplayAvailableSpaces( board *Board ) {
-  if spy.activeSpies[ "DisplayAvailableSpaces" ] {
-    spy.LogMethodCall( "DisplayAvailableSpaces" )
-  }
-}
-
-func ( spy *consoleSpy ) DisplayBoard( board *Board ) {
-  if spy.activeSpies[ "DisplayBoard" ] {
-    spy.LogMethodCall( "DisplayBoard" )
-  }
-}
-
-func ( spy *consoleSpy ) PromptMainMenu() int {
-  if spy.activeSpies[ "PromptMainMenu" ] {
-    spy.LogMethodCall( "PromptMainMenu" )
-  }
-  return spy.ui.PromptMainMenu()
-}
-
-func ( spy *consoleSpy ) PromptPlayerMove ( valid ...int ) int {
-  if spy.activeSpies[ "PromptPlayerMove" ] {
-    spy.LogMethodCall( "PromptPlayerMove" )
-  }
-  return spy.ui.PromptPlayerMove( valid... )
+  t.Log( "displays the board when the game is over" )
+  console.SpyOn( "DisplayBoard" )
+  runner.Run()
+  log := *console.SpyLog()
+  assert.Equal( t, log[ len( log ) - 1 ], "DisplayBoard" )
 }

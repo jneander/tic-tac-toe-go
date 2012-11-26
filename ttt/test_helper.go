@@ -1,6 +1,7 @@
 package ttt
 
 import "strconv"
+import "bytes"
 
 func AddMarks( b *Board, mark string, set ...int ) {
   for _,p := range set {
@@ -41,4 +42,13 @@ func MovesAsInput( moves ...int ) []string {
     input[i] = strconv.Itoa( v + 1 )
   }
   return input
+}
+
+func SetInputs( input *bytes.Buffer, data ...string ) {
+  input.Reset();
+  var result string
+  for _,v := range data {
+    result += v + "\n"
+  }
+  input.WriteString( result )
 }
