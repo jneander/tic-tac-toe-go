@@ -1,5 +1,6 @@
 package ttt
 
+import sassert "github.com/sdegutis/go.assert"
 import "github.com/stretchrcom/testify/assert"
 import "testing"
 
@@ -31,4 +32,9 @@ func TestQueue( t *testing.T ) {
   queue.Push( "string", "next" )
   assert.Equal( t, queue.Pop(), "string" )
   assert.Equal( t, queue.Pop(), "next" )
+}
+
+func TestMovesAsInput( t *testing.T ) {
+  sassert.DeepEquals( t, MovesAsInput( 1, 2 ), []string{ "2", "3" } )
+  sassert.DeepEquals( t, MovesAsInput( 5, 7 ), []string{ "6", "8" } )
 }

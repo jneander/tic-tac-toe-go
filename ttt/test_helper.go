@@ -1,5 +1,7 @@
 package ttt
 
+import "strconv"
+
 func AddMarks( b *Board, mark string, set ...int ) {
   for _,p := range set {
     b.Mark( p, mark )
@@ -31,4 +33,12 @@ func (q *Queue) IsEmpty() bool {
 
 func (q *Queue) Length() int {
   return len(q.queue)
+}
+
+func MovesAsInput( moves ...int ) []string {
+  input := make( []string, len( moves ) )
+  for i,v := range moves {
+    input[i] = strconv.Itoa( v + 1 )
+  }
+  return input
 }
