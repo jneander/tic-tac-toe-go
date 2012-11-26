@@ -10,7 +10,7 @@ var ui UI = NewConsole( &in, &out )
 
 func TestConsoleUiPromptMainMenu( t *testing.T ) {
   t.Log( "#PromptMainMenu displays a prompt message" )
-  SetInputString( &in, "2\n" )
+  SetInputs( &in, "2" )
   expected := "\nWelcome to Tic Tac Toe in Go!\n" +
               "1) Player vs Player\n" +
               "2) Exit\n\n" +
@@ -20,7 +20,7 @@ func TestConsoleUiPromptMainMenu( t *testing.T ) {
   assert.Equal( t, actual, expected )
 
   t.Log( "#PromptMainMenu accepts only options listed" )
-  SetInputString( &in, "3\n5\n2\nunread" )
+  SetInputs( &in, "3", "5", "2" )
   assert.Equal( t, ui.PromptMainMenu(), EXIT_GAME )
 }
 
@@ -64,7 +64,7 @@ func TestConsoleUiDisplayAvailableSpaces( t *testing.T ) {
 
 func TestConsoleUiPromptPlayerMove( t *testing.T ) {
   t.Log( "PromptPlayerMove() prints a prompt" )
-  SetInputString( &in, "4\n" )
+  SetInputs( &in, "4" )
   ui.PromptPlayerMove()
   expected := "Please enter the space for your mark: "
   assert.Equal( t, ReadInput( &out ), expected )
@@ -86,7 +86,7 @@ func TestConsoleUiPromptPlayerMove( t *testing.T ) {
   assert.Equal( t, ui.PromptPlayerMove( 4, 5, 6 ), 5 )
 
   t.Log( "PromptPlayerMove() rejects invalid input" )
-  SetInputString( &in, "\ninvalid\n6" )
+  SetInputs( &in, "", "invalid", "6" )
   assert.Equal( t, ui.PromptPlayerMove(), 6 - 1 )
 }
 
@@ -98,9 +98,4 @@ func TestReadLine( t *testing.T ) {
   t.Log( "ReadLine() reads input up until end of reader buffer" )
   assert.Equal( t, ReadLine( buffer ), "value" )
   assert.Equal( t, ReadLine( buffer ), "" )
-}
-
-func SetInputString( input *bytes.Buffer, data string ) {
-  input.Reset();
-  input.WriteString( data )
 }
