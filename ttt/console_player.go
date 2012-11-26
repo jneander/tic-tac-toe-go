@@ -1,25 +1,25 @@
 package ttt
 
-type consolePlayer struct {
+type ConsolePlayer struct {
   mark string
   console UI
 }
 
-func NewConsolePlayer( console UI ) Player {
-  player := new( consolePlayer )
+func NewConsolePlayer( console UI ) *ConsolePlayer {
+  player := new( ConsolePlayer )
   player.console = console
   return player
 }
 
-func ( c consolePlayer ) Move( board Board ) int {
+func ( c ConsolePlayer ) Move( board Board ) int {
   available := board.SpacesWithMark( board.Blank() )
   return c.console.PromptPlayerMove( available... )
 }
 
-func ( c *consolePlayer ) SetMark( mark string ) {
+func ( c *ConsolePlayer ) SetMark( mark string ) {
   c.mark = mark
 }
 
-func ( c consolePlayer ) GetMark() string {
+func ( c ConsolePlayer ) GetMark() string {
   return c.mark
 }
