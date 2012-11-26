@@ -82,8 +82,8 @@ func TestConsoleUiPromptPlayerMove( t *testing.T ) {
   assert.Equal( t, ui.PromptPlayerMove(), 6 )
 
   t.Log( "PromptPlayerMove() rejects input not found in optional filter list" )
-  SetInputString( &in, "3\n5\n7" )
-  assert.Equal( t, ui.PromptPlayerMove( 4, 5, 6 ), 5 - 1 )
+  SetInputs( &in, MovesAsInput( 3, 5, 7 )... )
+  assert.Equal( t, ui.PromptPlayerMove( 4, 5, 6 ), 5 )
 
   t.Log( "PromptPlayerMove() rejects invalid input" )
   SetInputString( &in, "\ninvalid\n6" )

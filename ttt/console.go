@@ -48,6 +48,7 @@ func ( c console ) DisplayBoard( b *Board ) {
 
 func ( c console ) PromptPlayerMove( filter ...int ) int {
   message := "Please enter the space for your mark: "
+  for i := range filter { filter[i]++ }
   return promptForInput( c, message, filter... ) - 1
 }
 
