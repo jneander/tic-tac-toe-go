@@ -1,0 +1,3 @@
+#!/bin/bash
+sudo go get -v -u github.com/sdegutis/go.assert
+sudo go get -v -u github.com/stretchrcom/testify
