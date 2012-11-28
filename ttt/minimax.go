@@ -9,17 +9,18 @@ type Minimax struct {
 func NewMinimax() *Minimax {
   m := new( Minimax )
   m.Rules = NewRules()
-  m.DepthLimit = 4
+  m.DepthLimit = 5
   return m
 }
 
 func (m *Minimax) Score( board *Board, currentMark string ) (score int, final bool) {
   score, final = m.FinalScore( board )
+  fin := false
   if !final && m.currentDepth < m.DepthLimit {
     m.currentDepth++
     nextMark := nextMark( currentMark )
-    score = m.bestOpposingScore( board, nextMark )
-    final = final || score == m.BestScoreForMark( nextMark )
+    score,fin = m.bestOpposingScore( board, nextMark )
+    final = final || fin || score == m.BestScoreForMark( nextMark )
     m.currentDepth--
   }
   return score, final
@@ -51,9 +52,9 @@ func (m Minimax) BestScoreForMark( mark string ) int {
 
 // PRIVATE
 
-func (m *Minimax) bestOpposingScore( board *Board, nextMark string ) int {
-  scores,_ := m.ScoreAvailableMoves( board, nextMark )
-  return m.BestOfScores( scores, nextMark )
+func (m *Minimax) bestOpposingScore( board *Board, nextMark string ) (int,bool) {
+  scores,fin := m.ScoreAvailableMoves( board, nextMark )
+  return m.BestOfScores( scores, nextMark ), fin
 }
 
 func nextMark( mark string ) string {

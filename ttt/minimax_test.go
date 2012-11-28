@@ -4,14 +4,16 @@ import sassert "github.com/sdegutis/go.assert"
 import "github.com/stretchrcom/testify/assert"
 import "testing"
 
+var testDeepRecursion = false
+
 func TestMinimax_ScoreAvailableMoves( t *testing.T ) {
   var minimax *Minimax = NewMinimax()
   var board = NewBoard()
   var max = "X"
   var min = "O"
 
-  t.Log( "DepthLimit is initialized to 4" )
-  assert.Equal( t, minimax.DepthLimit, 4 )
+  t.Log( "DepthLimit is initialized to 5" )
+  assert.Equal( t, minimax.DepthLimit, 5 )
 
   // set marks with possible win, loss, or block
   AddMarks( board, min, 0, 3 )
@@ -20,7 +22,7 @@ func TestMinimax_ScoreAvailableMoves( t *testing.T ) {
   // without recursion
   minimax.DepthLimit = 0
 
-  t.Log( "#Score returns the board score for the current depth" )
+  t.Log( "returns the board scores for the current depth" )
   expected := map[int]int{ 1:0, 4:0, 6:0, 7:0, 8:1 }
   actual,_ := minimax.ScoreAvailableMoves( board, max )
   sassert.DeepEquals( t, actual, expected )
@@ -28,7 +30,7 @@ func TestMinimax_ScoreAvailableMoves( t *testing.T ) {
   // with one level of recursion
   minimax.DepthLimit = 1
 
-  t.Log( "#Score evaluates the board through to the next depth" )
+  t.Log( "evaluates the board through to the next depth" )
   expected = map[int]int{ 1:-1, 4:-1, 6:0, 7:-1, 8:1 }
   actual,_ = minimax.ScoreAvailableMoves( board, max )
   sassert.DeepEquals( t, actual, expected )
@@ -84,6 +86,22 @@ func TestMinimax_ScoreAvailableMoves( t *testing.T ) {
   expected = map[int]int{ 2:1, 3:1, 4:1, 8:1 }
   actual,_ = minimax.ScoreAvailableMoves( board, min )
   sassert.DeepEquals( t, actual, expected )
+
+  // DEEP RECURSION
+
+  if testDeepRecursion {
+    // minimum starting recursion (the default)
+    minimax.DepthLimit = 5
+
+    // opponent takes the center
+    board.Reset()
+    AddMarks( board, min, 4 )
+
+    t.Log( "returns -1 for all edge spaces" )
+    expected = map[int]int{ 0:0, 1:-1, 2:0, 3:-1, 5:-1, 6:0, 7:-1, 8:0 }
+    actual,_ = minimax.ScoreAvailableMoves( board, max )
+    sassert.DeepEquals( t, actual, expected )
+  }
 }
 
 func TestMinimax_Score( t *testing.T ) {
