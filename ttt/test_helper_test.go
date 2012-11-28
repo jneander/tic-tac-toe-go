@@ -34,7 +34,8 @@ func TestQueue( t *testing.T ) {
   assert.Equal( t, queue.Pop(), "next" )
 }
 
-func TestMovesAsInput( t *testing.T ) {
+func Test_MovesAsInput( t *testing.T ) {
+  t.Log( "converts numbers to strings of one value higher" )
   sassert.DeepEquals( t, MovesAsInput( 1, 2 ), []string{ "2", "3" } )
   sassert.DeepEquals( t, MovesAsInput( 5, 7 ), []string{ "6", "8" } )
 }

@@ -57,7 +57,7 @@ func TestFakeConsole( t *testing.T ) {
   for i := 0; i < 4; i++ { fake.DisplayAvailableSpaces( nil ) }
   assert.Equal( t, fake.TimesCalled( "DisplayAvailableSpaces" ), 4 )
 
-  t.Log( "spies are logged independently" )
+  t.Log( "#SpyOn spies are logged independently" )
   assert.Equal( t, fake.TimesCalled( "PromptMainMenu" ), 3 )
   assert.Equal( t, fake.TimesCalled( "PromptPlayerMove" ), 3 )
   assert.Equal( t, fake.TimesCalled( "DisplayBoard" ), 2 )

@@ -31,6 +31,8 @@ func TestImpossibleComputer_Move( t *testing.T ) {
   AddMarks( board, "O", 3, 4 )
   assert.Equal( t, computer.Move( *board ), 5 )
 
+  // TODO make ImpossibleComputer symbol-independent
+
   fakeMinimax := new( FakeMinimax )
   computer.Minimax = fakeMinimax
 
@@ -44,6 +46,8 @@ func TestImpossibleComputer_Move( t *testing.T ) {
 
 func TestImpossibleComputer_Mark( t *testing.T ) {
   var computer = NewImpossibleComputer()
+
+  t.Log( "implements GetMark and SetMark" )
   computer.SetMark( "X" )
   assert.Equal( t, computer.GetMark(), "X" )
   computer.SetMark( "O" )

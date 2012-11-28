@@ -3,9 +3,9 @@ package ttt
 import "github.com/sdegutis/go.assert"
 import "testing"
 
-func TestDumbComputerMove( t *testing.T ) {
+func TestDumbComputer_Move( t *testing.T ) {
   var TIMES = 200
-  var computer Player = new( DumbComputer )
+  var computer Player = NewDumbComputer()
   var board = NewBoard()
 
   t.Log( "chooses a move at random" )
@@ -25,8 +25,10 @@ func TestDumbComputerMove( t *testing.T ) {
   assert.DeepEquals( t, moves, []int{ 1,0,1,0,1,0,1,1,0 } )
 }
 
-func TestDumbComputerMark( t *testing.T ) {
+func TestDumbComputer_Mark( t *testing.T ) {
   var computer = NewDumbComputer()
+
+  t.Log( "implements GetMark and SetMark" )
   computer.SetMark( "X" )
   assert.Equals( t, computer.GetMark(), "X" )
   computer.SetMark( "O" )

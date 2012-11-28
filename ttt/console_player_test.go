@@ -4,7 +4,7 @@ import "github.com/stretchrcom/testify/assert"
 import "testing"
 import "bytes"
 
-func TestConsolePlayerMove( t *testing.T ) {
+func TestConsolePlayer_Move( t *testing.T ) {
   var in  bytes.Buffer
   var out bytes.Buffer
   var console = NewConsole( &in, &out )
@@ -24,8 +24,10 @@ func TestConsolePlayerMove( t *testing.T ) {
   assert.Equal( t, player.Move( *board ), 5 )
 }
 
-func TestConsolePlayerMark( t *testing.T ) {
+func TestConsolePlayer_Mark( t *testing.T ) {
   var player = NewConsolePlayer( nil )
+
+  t.Log( "implements GetMark and SetMark" )
   player.SetMark( "X" )
   assert.Equal( t, player.GetMark(), "X" )
   player.SetMark( "O" )

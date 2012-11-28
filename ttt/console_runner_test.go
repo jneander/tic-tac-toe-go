@@ -3,7 +3,7 @@ package ttt
 import "github.com/stretchrcom/testify/assert"
 import "testing"
 
-func TestConsoleRunnerRun( t *testing.T ) {
+func TestConsoleRunner_Run( t *testing.T ) {
   var console = NewFakeConsole()
   var game = NewGame()
   var p1, p2 = new( FakePlayer ), new( FakePlayer )
@@ -21,7 +21,7 @@ func TestConsoleRunnerRun( t *testing.T ) {
   runner.Run()
   assert.Equal( t, len( *console.SpyLog() ), 0 )
 
-  // Enter a 'Player goes first' loop
+  // Enter a 'Player Goes First' loop
   console.StubPromptMainMenu( PLAYER_FIRST )
 
   t.Log( "applies alternating marks for successive spaces" )
@@ -34,17 +34,16 @@ func TestConsoleRunnerRun( t *testing.T ) {
   assert.Equal( t, game.Board().Spaces()[3], "X" )
   assert.Equal( t, game.Board().Spaces()[1], "O" )
 
-  t.Log( "original player order remains" )
+  t.Log( "original player order remains after completion" )
   assert.Equal( t, runner.Players[0], p1 )
 
   t.Log( "stops applying moves when game is over" )
   game.Reset()
-  game.ApplyMove( 1, "X" )
-  game.ApplyMove( 4, "X" )
-  p1.StubMoves( 7, 0 )
-  p2.StubMoves( 8 )
+  p1.StubMoves( 1, 4, 7, 0 )
+  p2.StubMoves( 2, 3, 8 )
   runner.Run()
   assert.True( t, game.IsOver() )
+  assert.Equal( t, game.Board().Spaces()[7], p1.GetMark() )
   assert.Equal( t, game.Board().Spaces()[8], game.Board().Blank() )
   assert.Equal( t, game.Board().Spaces()[0], game.Board().Blank() )
 
