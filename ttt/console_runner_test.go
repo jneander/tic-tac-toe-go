@@ -34,6 +34,9 @@ func TestConsoleRunnerRun( t *testing.T ) {
   assert.Equal( t, game.Board().Spaces()[3], "X" )
   assert.Equal( t, game.Board().Spaces()[1], "O" )
 
+  t.Log( "original player order remains" )
+  assert.Equal( t, runner.Players[0], p1 )
+
   t.Log( "stops applying moves when game is over" )
   game.Reset()
   game.ApplyMove( 1, "X" )
@@ -69,4 +72,11 @@ func TestConsoleRunnerRun( t *testing.T ) {
   runner.Run()
   log := *console.SpyLog()
   assert.Equal( t, log[ len( log ) - 1 ], "DisplayBoard" )
+
+  // Enter a 'Computer Goes First' loop
+  console.StubPromptMainMenu( COMPUTER_FIRST )
+
+  t.Log( "swaps player order to make computer go first" )
+  runner.Run()
+  assert.Equal( t, runner.Players[0], p2 )
 }

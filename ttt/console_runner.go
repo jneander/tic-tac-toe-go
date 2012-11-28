@@ -7,9 +7,12 @@ type ConsoleRunner struct {
 }
 
 func ( runner *ConsoleRunner ) Run() {
-  if runner.UI.PromptMainMenu() != EXIT_GAME {
-    runGameLoop( runner.Game, runner.Players, runner.UI )
+  selection := runner.UI.PromptMainMenu()
+  if selection == EXIT_GAME { return }
+  if selection == COMPUTER_FIRST {
+    runner.Players[0], runner.Players[1] = runner.Players[1], runner.Players[0]
   }
+  runGameLoop( runner.Game, runner.Players, runner.UI )
 }
 
 func runGameLoop( game Game, players []Player, console UI ) {
