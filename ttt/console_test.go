@@ -12,7 +12,7 @@ func TestConsolePromptMainMenu( t *testing.T ) {
   t.Log( "#PromptMainMenu displays a prompt message" )
   SetInputs( &in, "2" )
   expected := "\nWelcome to Tic Tac Toe in Go!\n" +
-              "1) Player vs Player\n" +
+              "1) Player vs Computer\n" +
               "2) Exit\n\n" +
               "Please enter your choice: "
   ui.PromptMainMenu()
