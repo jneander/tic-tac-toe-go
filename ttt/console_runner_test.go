@@ -21,8 +21,8 @@ func TestConsoleRunnerRun( t *testing.T ) {
   runner.Run()
   assert.Equal( t, len( *console.SpyLog() ), 0 )
 
-  // Enter a Player vs Player loop
-  console.StubPromptMainMenu( P_V_P )
+  // Enter a 'Player goes first' loop
+  console.StubPromptMainMenu( PLAYER_FIRST )
 
   t.Log( "applies alternating marks for successive spaces" )
   game.Reset()

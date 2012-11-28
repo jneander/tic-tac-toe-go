@@ -18,17 +18,18 @@ func NewConsole( in Reader, out Writer ) *console {
 
 func ( c console ) PromptMainMenu() int {
   message := "\nWelcome to Tic Tac Toe in Go!\n" +
-              "1) Player vs Computer\n" +
-              "2) Exit\n\n" +
-              "Please enter your choice: "
-  result := promptForInput( c, message, 1, 2 )
+             "1) Player Goes First\n" +
+             "2) Computer Goes First\n" +
+             "3) Exit\n\n" +
+             "Please enter your choice: "
+  result := promptForInput( c, message, 1, 2, 3 )
   switch result {
   case 1:
-    return P_V_P
+    return PLAYER_FIRST
   case 2:
-    return EXIT_GAME
+    return COMPUTER_FIRST
   }
-  return result
+  return EXIT_GAME
 }
 
 func ( c console ) DisplayAvailableSpaces( b *Board ) {

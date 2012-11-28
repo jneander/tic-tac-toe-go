@@ -12,8 +12,9 @@ func TestConsolePromptMainMenu( t *testing.T ) {
   t.Log( "#PromptMainMenu displays a prompt message" )
   SetInputs( &in, "2" )
   expected := "\nWelcome to Tic Tac Toe in Go!\n" +
-              "1) Player vs Computer\n" +
-              "2) Exit\n\n" +
+              "1) Player Goes First\n" +
+              "2) Computer Goes First\n" +
+              "3) Exit\n\n" +
               "Please enter your choice: "
   ui.PromptMainMenu()
   actual := ReadInput( &out )
@@ -21,6 +22,12 @@ func TestConsolePromptMainMenu( t *testing.T ) {
 
   t.Log( "#PromptMainMenu accepts only options listed" )
   SetInputs( &in, "3", "5", "2" )
+  assert.Equal( t, ui.PromptMainMenu(), EXIT_GAME )
+
+  t.Log( "#PromptMainMenu returns constants based on input" )
+  SetInputs( &in, "1", "2", "3" )
+  assert.Equal( t, ui.PromptMainMenu(), PLAYER_FIRST )
+  assert.Equal( t, ui.PromptMainMenu(), COMPUTER_FIRST )
   assert.Equal( t, ui.PromptMainMenu(), EXIT_GAME )
 }
 
