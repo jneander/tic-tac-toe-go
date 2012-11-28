@@ -10,7 +10,8 @@ Written in Go
 
 ###Running the Tests
 
-``go test``
+1. ``cd ttt``
+2. ``go test``
 
 To see a more verbose output from the tests, use the ``-v`` flag as follows:
 ``go test -v``
@@ -19,4 +20,5 @@ To see a more verbose output from the tests, use the ``-v`` flag as follows:
 
 ###Running the Game
 
+While in the 'tic-tac-toe-go' directory, run the following command:
 ``./tictactoe``
