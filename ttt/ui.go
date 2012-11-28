@@ -2,8 +2,6 @@ package ttt
 
 const (
   EXIT_GAME = iota
-  P_V_P
-  P_V_DUMB
   PLAYER_FIRST
   COMPUTER_FIRST
 )
