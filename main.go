@@ -1,6 +1,6 @@
 package main
 
-import "tictactoe/ttt"
+import "tic-tac-toe-go/ttt"
 import "os"
 
 func main() {
