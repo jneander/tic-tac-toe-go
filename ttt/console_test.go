@@ -76,19 +76,19 @@ func TestConsole_DisplayGameOver( t *testing.T ) {
   t.Log( "#DisplayGameOver reports 'Player X' win" )
   AddMarks( board, "X", 0, 1, 2 )
   ui.DisplayGameOver( game )
-  expected := "Player X is the winner!\n"
+  expected := "Player X is the winner!\n\n"
   assert.Equal( t, ReadInput( &out ), expected )
 
   t.Log( "#DisplayGameOver reports 'Player X' win" )
   AddMarks( board, "O", 1, 4, 7 )
   ui.DisplayGameOver( game )
-  expected = "Player O is the winner!\n"
+  expected = "Player O is the winner!\n\n"
   assert.Equal( t, ReadInput( &out ), expected )
 
   t.Log( "#DisplayGameOver informs of draw game" )
   board.Reset()
   ui.DisplayGameOver( game )
-  expected = "The game has ended in a draw!\n"
+  expected = "The game has ended in a draw!\n\n"
   assert.Equal( t, ReadInput( &out ), expected )
 }
 

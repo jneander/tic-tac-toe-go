@@ -50,9 +50,9 @@ func ( c console ) DisplayBoard( b *Board ) {
 func ( c console ) DisplayGameOver( g Game ) {
   winner, exists := g.Winner()
   if exists {
-    c.out.WriteString( "Player " + winner + " is the winner!\n" )
+    c.out.WriteString( "Player " + winner + " is the winner!\n\n" )
   } else {
-    c.out.WriteString( "The game has ended in a draw!\n" )
+    c.out.WriteString( "The game has ended in a draw!\n\n" )
   }
 }
 
