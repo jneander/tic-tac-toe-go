@@ -4,6 +4,8 @@ type Minimax struct {
   DepthLimit int
   Rules *Rules
   currentDepth int
+  minMark string
+  maxMark string
 }
 
 func NewMinimax() *Minimax {
@@ -40,14 +42,19 @@ func (m *Minimax) ScoreAvailableMoves( board *Board, currentMark string ) (map[i
 }
 
 func (m *Minimax) FinalScore( board *Board ) (int, bool) {
-  if m.Rules.MarkHasWinningSolution( board, "X" ) { return 1, true }
-  if m.Rules.MarkHasWinningSolution( board, "O" ) { return -1, true }
+  if m.Rules.MarkHasWinningSolution( board, m.maxMark ) { return 1, true }
+  if m.Rules.MarkHasWinningSolution( board, m.minMark ) { return -1, true }
   if len( board.SpacesWithMark( board.Blank() ) ) == 0 { return 0, true }
   return 0, false
 }
 
 func (m Minimax) BestScoreForMark( mark string ) int {
-  if mark == "X" { return 1 }; return -1
+  if mark == m.maxMark { return 1 }; return -1
+}
+
+func (m *Minimax) SetMinMaxMarks( min string, max string ) {
+  m.minMark = min
+  m.maxMark = max
 }
 
 // PRIVATE

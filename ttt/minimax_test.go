@@ -9,8 +9,8 @@ var testDeepRecursion = false
 func TestMinimax_ScoreAvailableMoves( t *testing.T ) {
   var minimax *Minimax = NewMinimax()
   var board = NewBoard()
-  var max = "X"
-  var min = "O"
+  var min, max = "O", "X"
+  minimax.SetMinMaxMarks( min, max )
 
   t.Log( "DepthLimit is initialized to 5" )
   assert.Equal( t, minimax.DepthLimit, 5 )
@@ -107,8 +107,8 @@ func TestMinimax_ScoreAvailableMoves( t *testing.T ) {
 func TestMinimax_Score( t *testing.T ) {
   var minimax = NewMinimax()
   var board = NewBoard()
-  var max = "X"
-  var min = "O"
+  var min, max = "X", "O"
+  minimax.SetMinMaxMarks( min, max )
 
   // without recursion
   minimax.DepthLimit = 0
@@ -157,8 +157,8 @@ func TestMinimax_Score( t *testing.T ) {
 func TestMinimax_CurrentScore( t *testing.T ) {
   var minimax = NewMinimax()
   var board = NewBoard()
-  var max = "X"
-  var min = "O"
+  var min, max = "O", "X"
+  minimax.SetMinMaxMarks( min, max )
 
   t.Log( "#FinalScore returns 1, true for 'max' win" )
   AddMarks( board, max, 3, 4, 5 )
@@ -188,34 +188,46 @@ func TestMinimax_CurrentScore( t *testing.T ) {
 
 func TestMinimax_BestScoreForMark( t *testing.T ) {
   var minimax = NewMinimax()
-  minMark := "O"
-  maxMark := "X"
+  var min, max = "O", "X"
+  minimax.SetMinMaxMarks( min, max )
 
   t.Log( "best score for min mark is -1" )
-  assert.Equal( t, minimax.BestScoreForMark( minMark ), -1 )
+  assert.Equal( t, minimax.BestScoreForMark( min ), -1 )
 
   t.Log( "best score for max mark is 1" )
-  assert.Equal( t, minimax.BestScoreForMark( maxMark ), 1 )
+  assert.Equal( t, minimax.BestScoreForMark( max ), 1 )
 }
 
 func TestMinimax_BestOfScores( t *testing.T ) {
   var minimax = NewMinimax()
-  minMark := "O"
-  maxMark := "X"
+  var min, max = "O", "X"
+  minimax.SetMinMaxMarks( min, max )
 
   allValues   := map[int]int{ 0:0, 1:1, 2:-1, 3:0 }
   highValues  := map[int]int{ 0:1, 1:0 }
   lowValues   := map[int]int{ 0:0, 2:-1 }
 
   t.Log( "best score for min mark is lowest" )
-  assert.Equal( t, minimax.BestOfScores( allValues, minMark ), -1 )
-  assert.Equal( t, minimax.BestOfScores( highValues, minMark ), 0 )
-  assert.Equal( t, minimax.BestOfScores( lowValues, minMark ), -1 )
+  assert.Equal( t, minimax.BestOfScores( allValues, min ), -1 )
+  assert.Equal( t, minimax.BestOfScores( highValues, min ), 0 )
+  assert.Equal( t, minimax.BestOfScores( lowValues, min ), -1 )
 
   t.Log( "best score for max mark is highest" )
-  assert.Equal( t, minimax.BestOfScores( allValues, maxMark ), 1 )
-  assert.Equal( t, minimax.BestOfScores( highValues, maxMark ), 1 )
-  assert.Equal( t, minimax.BestOfScores( lowValues, maxMark ), 0 )
+  assert.Equal( t, minimax.BestOfScores( allValues, max ), 1 )
+  assert.Equal( t, minimax.BestOfScores( highValues, max ), 1 )
+  assert.Equal( t, minimax.BestOfScores( lowValues, max ), 0 )
+}
+
+func TestMinimax_SetMinMaxMarks( t *testing.T ) {
+  var minimax = NewMinimax()
+
+  t.Log( "sets marks to be used internally" )
+  minimax.SetMinMaxMarks( "O", "X" )
+  assert.Equal( t, minimax.BestScoreForMark( "O" ), -1 )
+  assert.Equal( t, minimax.BestScoreForMark( "X" ), 1 )
+  minimax.SetMinMaxMarks( "X", "O" )
+  assert.Equal( t, minimax.BestScoreForMark( "O" ), 1 )
+  assert.Equal( t, minimax.BestScoreForMark( "X" ), -1 )
 }
 
 func BenchmarkMinimax_ScoreAvailableMoves( b *testing.B ) {

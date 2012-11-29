@@ -7,6 +7,7 @@ type ImpossibleComputer struct {
 
 type BoardScorer interface{
   ScoreAvailableMoves( *Board, string ) (map[int]int, bool)
+  SetMinMaxMarks( string, string )
 }
 
 func NewImpossibleComputer() *ImpossibleComputer {
@@ -16,7 +17,7 @@ func NewImpossibleComputer() *ImpossibleComputer {
 }
 
 func (c *ImpossibleComputer) Move( board Board ) int {
-  moveScores,_ := c.Minimax.ScoreAvailableMoves( &board, "X" )
+  moveScores,_ := c.Minimax.ScoreAvailableMoves( &board, c.mark )
   bestMove, bestScore := -1, -1
   for move,score := range moveScores {
     if score > bestScore { bestMove, bestScore = move, score }
@@ -26,6 +27,8 @@ func (c *ImpossibleComputer) Move( board Board ) int {
 
 func (c *ImpossibleComputer) SetMark( mark string ) {
   c.mark = mark
+  marks := map[string]string{ "X":"O", "O":"X" }
+  c.Minimax.SetMinMaxMarks( marks[mark], mark )
 }
 
 func (c *ImpossibleComputer) GetMark() string {

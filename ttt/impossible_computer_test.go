@@ -19,6 +19,7 @@ func TestNewImpossibleComputer( t *testing.T ) {
 func TestImpossibleComputer_Move( t *testing.T ) {
   var computer = NewImpossibleComputer()
   var board = NewBoard()
+  computer.SetMark( "X" )
 
   t.Log( "#Move returns any winning move" )
   AddMarks( board, "X", 1, 4 )
@@ -30,8 +31,6 @@ func TestImpossibleComputer_Move( t *testing.T ) {
   AddMarks( board, "X", 0, 6 )
   AddMarks( board, "O", 3, 4 )
   assert.Equal( t, computer.Move( *board ), 5 )
-
-  // TODO make ImpossibleComputer symbol-independent
 
   fakeMinimax := new( FakeMinimax )
   computer.Minimax = fakeMinimax
@@ -52,12 +51,30 @@ func TestImpossibleComputer_Mark( t *testing.T ) {
   assert.Equal( t, computer.GetMark(), "X" )
   computer.SetMark( "O" )
   assert.Equal( t, computer.GetMark(), "O" )
+
+  fakeMinimax := new( FakeMinimax )
+  computer.Minimax = fakeMinimax
+
+  t.Log( "sets marks on Minimax instance" )
+  computer.SetMark( "X" )
+  assert.Equal( t, fakeMinimax.minMark, "O" )
+  assert.Equal( t, fakeMinimax.maxMark, "X" )
+  computer.SetMark( "O" )
+  assert.Equal( t, fakeMinimax.minMark, "X" )
+  assert.Equal( t, fakeMinimax.maxMark, "O" )
 }
 
 type FakeMinimax struct {
   StubScores map[int]int
+  minMark string
+  maxMark string
 }
 
 func (f *FakeMinimax) ScoreAvailableMoves( *Board, string ) (map[int]int, bool) {
   return f.StubScores, false
+}
+
+func (f *FakeMinimax) SetMinMaxMarks( min string, max string ) {
+  f.minMark = min
+  f.maxMark = max
 }
