@@ -23,7 +23,7 @@ To see a more verbose output from the tests, use the ``-v`` flag as follows:
 
 While in the 'tic-tac-toe-go' directory, run the following command:
 
-``./tictactoe``
+``./tic-tac-toe-go``
 
 *This executable was built on OS X. If you are on a different platform, you may need to create another build using Go.*
 
