@@ -26,4 +26,5 @@ func runGameLoop( game Game, players []Player, console UI ) {
     }
   }
   console.DisplayBoard( game.Board() )
+  console.DisplayGameOver( game )
 }

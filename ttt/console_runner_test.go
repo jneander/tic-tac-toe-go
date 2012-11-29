@@ -20,6 +20,7 @@ func TestConsoleRunner_Run( t *testing.T ) {
   console.SpyOn( "DisplayAvailableSpaces", "DisplayBoard" )
   runner.Run()
   assert.Equal( t, len( *console.SpyLog() ), 0 )
+  console.RemoveSpies()
 
   // Enter a 'Player Goes First' loop
   console.StubPromptMainMenu( PLAYER_FIRST )
@@ -66,11 +67,17 @@ func TestConsoleRunner_Run( t *testing.T ) {
   // TODO confirm that this call takes place before each move request
   assert.Equal( t, console.TimesCalled( "DisplayAvailableSpaces" ), 8 )
 
+  t.Log( "displays the game result when the game is over" )
+  console.SpyOn( "DisplayGameOver" )
+  runner.Run()
+  log := *console.SpyLog()
+  assert.Equal( t, log[ len( log ) - 1 ], "DisplayGameOver" )
+
   t.Log( "displays the board when the game is over" )
   console.SpyOn( "DisplayBoard" )
   runner.Run()
-  log := *console.SpyLog()
-  assert.Equal( t, log[ len( log ) - 1 ], "DisplayBoard" )
+  log = *console.SpyLog()
+  assert.Equal( t, log[ len( log ) - 2 ], "DisplayBoard" )
 
   // Enter a 'Computer Goes First' loop
   console.StubPromptMainMenu( COMPUTER_FIRST )
