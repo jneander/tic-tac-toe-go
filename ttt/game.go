@@ -5,6 +5,7 @@ type Game interface {
   IsOver() bool
   IsValidMove( int ) bool
   ApplyMove( int, string )
+  Winner() ( string, bool )
 }
 
 type game struct {
@@ -23,6 +24,16 @@ func ( g *game ) Board() *Board {
 
 func ( g *game ) IsOver() bool {
   return winningSetExists( g.board ) || boardIsFull( g.board )
+}
+
+func ( g *game ) Winner() ( string, bool ) {
+  spaces := g.Board().Spaces()
+  for _,set := range solutions() {
+    if allSpacesMatch( g.Board(), set ) {
+      return spaces[ set[0] ], true
+    }
+  }
+  return "", false
 }
 
 func ( g *game ) IsValidMove( space int ) bool {
@@ -50,12 +61,20 @@ func boardIsFull( board *Board ) bool {
   return true
 }
 
-func winningSetExists( board *Board ) bool {
-  exists := false
+func winningMark( board *Board ) ( string, bool ) {
+  for _,set := range solutions() {
+    if allSpacesMatch( board, set ) {
+      return board.Spaces()[ set[0] ], true
+    }
+  }
+  return "", false
+}
+
+func winningSetExists( board *Board ) ( exists bool ) {
   for _,set := range solutions() {
     exists = exists || allSpacesMatch( board, set )
   }
-  return exists
+  return
 }
 
 func allSpacesMatch( board *Board, pos []int ) bool {

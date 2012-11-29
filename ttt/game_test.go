@@ -46,6 +46,29 @@ func TestGame_IsOver( t *testing.T ) {
   assert.True( t, game.IsOver() )
 }
 
+func TestGame_Winner( t *testing.T ) {
+  var game  = NewGame()
+  var board = game.Board()
+
+  t.Log( "#Winner returns \"X\", true if \"X\" was the winner" )
+  AddMarks( board, "X", 0, 1, 2 )
+  winner, exists := game.Winner()
+  assert.Equal( t, winner, "X" )
+  assert.True( t, exists )
+
+  t.Log( "#Winner returns \"O\", true if \"O\" was the winner" )
+  AddMarks( board, "O", 1, 4, 7 )
+  winner, exists = game.Winner()
+  assert.Equal( t, winner, "O" )
+  assert.True( t, exists )
+
+  t.Log( "#Winner returns empty string, false if there was no winner" )
+  board.Reset()
+  winner, exists = game.Winner()
+  assert.Equal( t, winner, "" )
+  assert.False( t, exists )
+}
+
 func TestGame_IsValidMove( t *testing.T ) {
   var game  = NewGame()
   var board = game.Board()
