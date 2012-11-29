@@ -85,4 +85,9 @@ func TestConsoleRunner_Run( t *testing.T ) {
   t.Log( "swaps player order to make computer go first" )
   runner.Run()
   assert.Equal( t, runner.Players[0], p2 )
+
+  t.Log( "swaps player marks to keep one mark always first" )
+  mark := runner.Players[0].GetMark()
+  runner.Run()
+  assert.Equal( t, runner.Players[0].GetMark(), mark )
 }

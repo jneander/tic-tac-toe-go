@@ -10,7 +10,7 @@ func ( runner *ConsoleRunner ) Run() {
   selection := runner.UI.PromptMainMenu()
   if selection == EXIT_GAME { return }
   if selection == COMPUTER_FIRST {
-    runner.Players[0], runner.Players[1] = runner.Players[1], runner.Players[0]
+    swapPlayerOrder( runner.Players )
   }
   runGameLoop( runner.Game, runner.Players, runner.UI )
 }
@@ -27,4 +27,11 @@ func runGameLoop( game Game, players []Player, console UI ) {
   }
   console.DisplayBoard( game.Board() )
   console.DisplayGameOver( game )
+}
+
+func swapPlayerOrder( players []Player ) {
+  marks := []string{ players[0].GetMark(), players[1].GetMark() }
+  players[0], players[1] = players[1], players[0]
+  players[0].SetMark( marks[0] )
+  players[1].SetMark( marks[1] )
 }

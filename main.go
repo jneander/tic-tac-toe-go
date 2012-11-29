@@ -9,8 +9,8 @@ func main() {
   var p1 = ttt.NewConsolePlayer( ui )
   var p2 = ttt.NewImpossibleComputer()
   var players = []ttt.Player{ p1, p2 }
-  p1.SetMark( "O" )
-  p2.SetMark( "X" )
+  p1.SetMark( "X" )
+  p2.SetMark( "O" )
 
   runner := ttt.ConsoleRunner{ game, ui, players }
   runner.Run()
