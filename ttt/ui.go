@@ -11,6 +11,7 @@ type UI interface {
   DisplayBoard( *Board )
   PromptPlayerMove( ...int ) int
   DisplayAvailableSpaces( *Board )
+  DisplayGameOver( Game )
 }
 
 type Reader interface {

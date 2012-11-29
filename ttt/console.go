@@ -47,6 +47,15 @@ func ( c console ) DisplayBoard( b *Board ) {
   c.out.WriteString( "\n" + strings.Join( rows, "\n" ) + "\n\n" )
 }
 
+func ( c console ) DisplayGameOver( g Game ) {
+  winner, exists := g.Winner()
+  if exists {
+    c.out.WriteString( "Player " + winner + " is the winner!\n" )
+  } else {
+    c.out.WriteString( "The game has ended in a draw!\n" )
+  }
+}
+
 func ( c console ) PromptPlayerMove( filter ...int ) int {
   message := "Please enter the space for your mark: "
   for i := range filter { filter[i]++ }
