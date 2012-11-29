@@ -48,7 +48,9 @@ func (f *fakeConsole) DisplayBoard( board *Board ) {
   f.logSpyCall( "DisplayBoard" )
 }
 
-func (f *fakeConsole) DisplayGameOver( game Game ) {}
+func (f *fakeConsole) DisplayGameOver( game Game ) {
+  f.logSpyCall( "DisplayGameOver" )
+}
 
 func (f *fakeConsole) UseLogger( logger *[]string ) {
   f.altLogger = logger

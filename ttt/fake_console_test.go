@@ -47,7 +47,7 @@ func TestFakeConsole( t *testing.T ) {
 
   t.Log( "#SpyOn can receive multiple methods to spy" )
   assert.Equal( t, fake.TimesCalled( "DisplayBoard" ), 0 )
-  fake.SpyOn( "DisplayBoard", "DisplayAvailableSpaces" )
+  fake.SpyOn( "DisplayBoard", "DisplayAvailableSpaces", "DisplayGameOver" )
 
   t.Log( "#SpyOn spies on #DisplayBoard" )
   for i := 0; i < 2; i++ { fake.DisplayBoard( nil ) }
@@ -57,11 +57,16 @@ func TestFakeConsole( t *testing.T ) {
   for i := 0; i < 4; i++ { fake.DisplayAvailableSpaces( nil ) }
   assert.Equal( t, fake.TimesCalled( "DisplayAvailableSpaces" ), 4 )
 
+  t.Log( "#SpyOn spies on #DisplayGameOver" )
+  for i := 0; i < 3; i++ { fake.DisplayGameOver( nil ) }
+  assert.Equal( t, fake.TimesCalled( "DisplayGameOver" ), 3 )
+
   t.Log( "#SpyOn spies are logged independently" )
   assert.Equal( t, fake.TimesCalled( "PromptMainMenu" ), 3 )
   assert.Equal( t, fake.TimesCalled( "PromptPlayerMove" ), 3 )
   assert.Equal( t, fake.TimesCalled( "DisplayBoard" ), 2 )
   assert.Equal( t, fake.TimesCalled( "DisplayAvailableSpaces" ), 4 )
+  assert.Equal( t, fake.TimesCalled( "DisplayGameOver" ), 3 )
 
   // Resetting and Removing Spies
 
