@@ -14,11 +14,19 @@ Written in Go
 2. ``go test``
 
 To see a more verbose output from the tests, use the ``-v`` flag as follows:
+
 ``go test -v``
 
-*note: Go test output can be difficult to follow. I recommend only using the verbose flag if you're curious.*
+*Go test output can be difficult to follow. I recommend only using the verbose flag if you're curious.*
 
 ###Running the Game
 
 While in the 'tic-tac-toe-go' directory, run the following command:
+
 ``./tictactoe``
+
+*This executable was built on OS X. If you are on a different platform, you may need to create another build using Go.*
+
+###Additional Resources
+
+In order to use most of Go's features, you'll need to do some extra setup. The Go command-line tools have some requirements for workspace paths and environment variables. For more information, read the [Go Documentation](http://golang.org/doc/code.html).
